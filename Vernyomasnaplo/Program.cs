@@ -172,18 +172,31 @@ namespace Vernyomasnaplo
         static void AdatokHozzaadasa()
         {
             Console.Clear();
-            Console.Write("Adja meg a vérnyomását: ");
-            int vernyomas = int.Parse(Console.ReadLine());
-            Console.Write("Adja meg a pulzusát: ");
-            int pulzus = int.Parse(Console.ReadLine());
+            
+            for(int i = 0; i < adatok.Count; i++)
+            {
+                string[] mezo = adatok[i].Split(';');
+                if (mezo[0] == bejelentkezettFelhasznalo)
+                {
+                    Console.Write("Adja meg a vérnyomását: ");
+                    int vernyomas = int.Parse(Console.ReadLine());
+                    Console.Write("Adja meg a pulzusát: ");
+                    int pulzus = int.Parse(Console.ReadLine());
+                    string keszadat = $"{vernyomas};{pulzus};";
+                    if (mezo[1] != "")
+                    {
+                        adatok.Insert(adatok.Count, "|");
+                    }
+                    adatok.Insert(i, keszadat);
+                    for (int j = 0; j < adatok.Count; j++)
+                    {
+                        File.AppendAllText(adatokFile, adatok[j]);
+                    }
+                    Console.WriteLine("Adat hozzáadva.");
+                    Console.ReadLine();
+                }
+            }
 
-            string keszadat = $"{vernyomas};{pulzus}";
-            adatok.Add(keszadat);
-
-            File.AppendAllText(adatokFile, Environment.NewLine + keszadat);
-
-            Console.WriteLine("Adat hozzáadva.");
-            Console.ReadLine();
         }
 
         static void Modosit()
@@ -200,7 +213,7 @@ namespace Vernyomasnaplo
             for (int i = 0; i < adatok.Count; i++)
             {
                 string[] mezok = adatok[i].Split(';');
-                Console.WriteLine($"{i + 1}. Vérnyomás: {mezok[0]}, Pulzus: {mezok[1]}");
+                Console.WriteLine($"{i + 1}. Vérnyomás: {mezok[1]}, Pulzus: {mezok[2]}");
             }
 
             Console.Write("Add meg a módosítandó sorszámot: ");
@@ -240,7 +253,7 @@ namespace Vernyomasnaplo
                 foreach (var sor in adatok)
                 {
                     var mezok = sor.Split(';');
-                    Console.WriteLine($"Vérnyomás: {mezok[0]}, Pulzus: {mezok[1]}");
+                    Console.WriteLine($"Vérnyomás: {mezok[1]}, Pulzus: {mezok[2]}");
                 }
             }
 
@@ -251,33 +264,6 @@ namespace Vernyomasnaplo
         static void Torol()
         {
             Console.Clear();
-            if (adatok.Count == 0)
-            {
-                Console.WriteLine("Nincs törölhető adat.");
-                Console.ReadLine();
-                return;
-            }
-
-            for (int i = 0; i < adatok.Count; i++)
-            {
-                var mezok = adatok[i].Split(';');
-                Console.WriteLine($"{i + 1}. Vérnyomás: {mezok[0]}, Pulzus: {mezok[1]}");
-            }
-
-            Console.Write("Add meg a törlendő sorszámot: ");
-            int index = int.Parse(Console.ReadLine()) - 1;
-
-            if (index >= 0 && index < adatok.Count)
-            {
-                adatok.RemoveAt(index);
-                File.WriteAllLines(adatokFile, adatok);
-                Console.WriteLine("Adat törölve.");
-            }
-            else
-            {
-                Console.WriteLine("Érvénytelen sorszám!");
-            }
-
             Console.ReadLine();
         }
 
