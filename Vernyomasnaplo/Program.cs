@@ -147,7 +147,8 @@ namespace Vernyomasnaplo
                 return;
             }
             File.AppendAllText(felhasznalokFile, $"{nev};{jelszo}{Environment.NewLine}");
-            File.AppendAllText(adatokFile, $"{Environment.NewLine}{nev}(");
+            File.AppendAllText(adatokFile, $"{nev}({Environment.NewLine}");
+            adatok.Add($"{nev}(");
             Console.WriteLine("Sikeres regisztráció!");
             Console.ReadLine();
         }
@@ -205,11 +206,13 @@ namespace Vernyomasnaplo
         {
             Console.Clear();
             bool talalat = false;
+            string nev = "";
             int index = 0;
             for (int i = 0; i < adatok.Count; i++)
             {
                 if (adatok[i].Split('(')[0] == bejelentkezettFelhasznalo)
                 {
+                    nev = adatok[i].Split('(')[0];
                     talalat = true;
                     index = i;
                     break;
@@ -224,7 +227,7 @@ namespace Vernyomasnaplo
 
                 string keszadat = $"{vernyomas};{pulzus}";
 
-                if (adatok[index].Split(';')[1] != "")
+                if (adatok[index].Split('(')[1] != "")
                 {
                     adatok[index] += "|";
                     adatok[index] += keszadat;
@@ -237,12 +240,14 @@ namespace Vernyomasnaplo
             else
             {
                 Console.WriteLine("Az Adatok.txt be nem került bele a felhasználó neved!");
+                Console.WriteLine(bejelentkezettFelhasznalo);
+                Console.WriteLine(nev);
                 Console.ReadLine();
             }
             File.WriteAllText(adatokFile, "");
             for (int i = 0; i < adatok.Count; i++)
             {
-                File.AppendAllText(adatokFile, adatok[i] +Environment.NewLine);
+                File.AppendAllText(adatokFile, adatok[i] + Environment.NewLine);
             }
             Console.WriteLine("Adat hozzáadva.");
             Console.ReadLine();
