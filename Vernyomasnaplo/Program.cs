@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace Vernyomasnaplo
 {
@@ -145,7 +147,7 @@ namespace Vernyomasnaplo
                 return;
             }
             File.AppendAllText(felhasznalokFile, $"{nev};{jelszo}{Environment.NewLine}");
-            File.AppendAllText(adatokFile, $"{Environment.NewLine}{nev}");
+            File.AppendAllText(adatokFile, $"{Environment.NewLine}{nev}(");
             Console.WriteLine("Sikeres regisztráció!");
             Console.ReadLine();
         }
@@ -202,31 +204,48 @@ namespace Vernyomasnaplo
         static void AdatokHozzaadasa()
         {
             Console.Clear();
-            
-            for(int i = 0; i < adatok.Count; i++)
+            bool talalat = false;
+            int index = 0;
+            for (int i = 0; i < adatok.Count; i++)
             {
-                string[] mezo = adatok[i].Split(';');
-                if (mezo[0] == bejelentkezettFelhasznalo)
+                if (adatok[i].Split('(')[0] == bejelentkezettFelhasznalo)
                 {
-                    Console.Write("Adja meg a vérnyomását: ");
-                    int vernyomas = int.Parse(Console.ReadLine());
-                    Console.Write("Adja meg a pulzusát: ");
-                    int pulzus = int.Parse(Console.ReadLine());
-                    string keszadat = $"{vernyomas};{pulzus};";
-                    if (mezo[1] != "")
-                    {
-                        adatok.Insert(adatok.Count, "|");
-                    }
-                    adatok.Insert(i, keszadat);
-                    for (int j = 0; j < adatok.Count; j++)
-                    {
-                        File.AppendAllText(adatokFile, adatok[j]);
-                    }
-                    Console.WriteLine("Adat hozzáadva.");
-                    Console.ReadLine();
+                    talalat = true;
+                    index = i;
+                    break;
                 }
             }
+            if (talalat == true)
+            {
+                Console.Write("Adja meg a vérnyomását: ");
+                int vernyomas = int.Parse(Console.ReadLine());
+                Console.Write("Adja meg a pulzusát: ");
+                int pulzus = int.Parse(Console.ReadLine());
 
+                string keszadat = $"{vernyomas};{pulzus}";
+
+                if (adatok[index].Split(';')[1] != "")
+                {
+                    adatok[index] += "|";
+                    adatok[index] += keszadat;
+                }
+                else
+                {
+                    adatok[index] += keszadat;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Az Adatok.txt be nem került bele a felhasználó neved!");
+                Console.ReadLine();
+            }
+            File.WriteAllText(adatokFile, "");
+            for (int i = 0; i < adatok.Count; i++)
+            {
+                File.AppendAllText(adatokFile, adatok[i] +Environment.NewLine);
+            }
+            Console.WriteLine("Adat hozzáadva.");
+            Console.ReadLine();
         }
 
         static void Modosit()
@@ -272,18 +291,29 @@ namespace Vernyomasnaplo
         static void Megjelenit()
         {
             Console.Clear();
+            bool talalat = false;
+            int index = 0;
+            for (int i = 0; i < adatok.Count; i++)
+            {
+                if (adatok[i].Split('(')[0] == bejelentkezettFelhasznalo)
+                {
+                    talalat = true;
+                    index = i;
+                    break;
+                }
+            }
             Console.WriteLine("Adatok megjelenítése:\n");
 
-            if (adatok.Count == 0)
+            if (talalat == true)
             {
-                Console.WriteLine("Nincs adat a listában.");
-            }
-            else
-            {
-                foreach (var sor in adatok)
+                Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]}\n");
+                if (adatok[index].Split('(')[1] != "")
                 {
-                    var mezok = sor.Split(';');
-                    Console.WriteLine($"Vérnyomás: {mezok[1]}, Pulzus: {mezok[2]}");
+                    int darab = adatok[index].Split('|').Count();
+                    for(int i = 0; i < darab; i++)
+                    {
+                        Console.Write($"A(z) {i+1}. mérés eredménye vérnyomás : {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]} pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}\n");
+                    }
                 }
             }
 
