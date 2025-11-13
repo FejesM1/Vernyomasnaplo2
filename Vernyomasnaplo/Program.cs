@@ -51,53 +51,56 @@ namespace Vernyomasnaplo
             while (fut)
             {
                 Console.BackgroundColor = szinek[alaphatter];
-                try
+                Console.Clear();
+
+                int startIndex = bejelentkezve ? 2 : 0;
+                int endIndex = bejelentkezve ? menupontok.Length : 2;
+
+
+                for (int i = startIndex; i < endIndex; i++)
                 {
-                    Console.Clear();
-                    for (int i = 0; i < menupontok_szama; i++)
+                    if (aktualis_menu_pont == i)
                     {
-                        if (aktualis_menu_pont == i)
-                        {
-                            Console.ForegroundColor = szinek[alapszin];
-                            Console.WriteLine(menupontok[i]);
-                            Console.ForegroundColor = ConsoleColor.White;
-                        }
-                        else
-                        {
-                            Console.WriteLine(menupontok[i]);
-                        }
+                        Console.ForegroundColor = szinek[alapszin];
+                        Console.WriteLine(menupontok[i]);
+                        Console.ForegroundColor = ConsoleColor.White;
                     }
-
-                    switch (Console.ReadKey().Key)
+                    else
                     {
-                        case ConsoleKey.Enter:
-                            kivalasztva = true;
-                            break;
-                        case ConsoleKey.UpArrow:
-                            if (aktualis_menu_pont > 0) aktualis_menu_pont--;
-                            break;
-                        case ConsoleKey.DownArrow:
-                            if (aktualis_menu_pont < menupontok_szama - 1) aktualis_menu_pont++;
-                            break;
-                        default:
-                            Console.Beep();
-                            break;
-                    }
-
-                    if (kivalasztva)
-                    {
-                        fuggvenyek[aktualis_menu_pont]();
-                        kivalasztva = false;
-                        aktualis_menu_pont = 0;
+                        Console.WriteLine(menupontok[i]);
                     }
                 }
-                catch (Exception e)
+
+
+                var key = Console.ReadKey(true).Key;
+                switch (key)
                 {
-                    Console.Clear();
-                    Console.WriteLine("Hiba történt!");
-                    Console.WriteLine(e.Message);
-                    Console.ReadLine();
+                    case ConsoleKey.Enter:
+
+                        if (aktualis_menu_pont >= startIndex && aktualis_menu_pont < endIndex)
+                            fuggvenyek[aktualis_menu_pont]();
+
+
+                        if (bejelentkezve && aktualis_menu_pont < 2)
+                            aktualis_menu_pont = 2;
+                        break;
+
+                    case ConsoleKey.UpArrow:
+                        if (aktualis_menu_pont > startIndex)
+                            aktualis_menu_pont--;
+                        break;
+
+                    case ConsoleKey.DownArrow:
+                        if (aktualis_menu_pont < endIndex - 1)
+                            aktualis_menu_pont++;
+                        break;
+
+                    default:
+                        Console.Beep();
+                        break;
                 }
+
+                
             }
         }
 
@@ -118,7 +121,13 @@ namespace Vernyomasnaplo
             Console.Clear();
             Console.WriteLine("Regisztrálás:\n");
             Console.Write("Felhasználónév: ");
-            string nev = Console.ReadLine();
+            string nev = Console.ReadLine()?.Trim();
+            if (string.IsNullOrEmpty(nev))
+            {
+                Console.WriteLine("A felhasználónév nem lehet üres!");
+                Console.ReadLine(); 
+                return;
+            }
 
             if (FelhasznaloLetezik(nev))
             {
@@ -128,9 +137,15 @@ namespace Vernyomasnaplo
             }
 
             Console.Write("Jelszó: ");
-            string jelszo = Console.ReadLine();
-
+            string jelszo = Console.ReadLine()?.Trim();
+            if (string.IsNullOrEmpty(jelszo))
+            {
+                Console.WriteLine("A jelszó nem lehet üres!");
+                Console.ReadLine();
+                return;
+            }
             File.AppendAllText(felhasznalokFile, $"{nev};{jelszo}{Environment.NewLine}");
+            File.AppendAllText(adatokFile, $"{Environment.NewLine}{nev}");
             Console.WriteLine("Sikeres regisztráció!");
             Console.ReadLine();
         }
@@ -141,9 +156,24 @@ namespace Vernyomasnaplo
             Console.WriteLine("Bejelentkezés:\n");
 
             Console.Write("Felhasználónév: ");
-            string nev = Console.ReadLine();
+            string nev = Console.ReadLine()?.Trim();
+
+            if (string.IsNullOrEmpty(nev))
+            {
+                Console.WriteLine("A felhasználónév nem lehet üres!");
+                Console.ReadLine();
+                return; 
+            }
+
             Console.Write("Jelszó: ");
-            string jelszo = Console.ReadLine();
+            string jelszo = Console.ReadLine()?.Trim();
+
+            if (string.IsNullOrEmpty(jelszo))
+            {
+                Console.WriteLine("A jelszó nem lehet üres!");
+                Console.ReadLine();
+                return;
+            }
 
             bool sikeres = false;
             foreach (var sor in File.ReadAllLines(felhasznalokFile))
