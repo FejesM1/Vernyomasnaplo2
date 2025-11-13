@@ -200,18 +200,16 @@ namespace Vernyomasnaplo
             for (int i = 0; i < adatok.Count; i++)
             {
                 string[] mezok = adatok[i].Split(';');
-                Console.WriteLine($"Név: {mezok[0]}, Vérnyomás: {mezok[1]}, Pulzus: {mezok[2]}");
+                Console.WriteLine($"Vérnyomás: {mezok[0]}, Pulzus: {mezok[1]}");
             }
 
             Console.Write("Add a módosítandó sornak a számát: ");
             bekeres = int.Parse(Console.ReadLine()) - 1;
-            Console.Write("Adja meg a nevét: ");
-            string bekeres2 = Console.ReadLine();
             Console.Write("Adja meg a vérnyomását: ");
-            int bekeres3 = int.Parse(Console.ReadLine());
+            int bekeres2 = int.Parse(Console.ReadLine());
             Console.Write("Adja meg a pulzusát: ");
-            int bekeres4 = int.Parse(Console.ReadLine());
-            var keszadat = bekeres2 + ";" + bekeres3 + ";" + bekeres4;
+            int bekeres3 = int.Parse(Console.ReadLine());
+            var keszadat = bekeres2 + ";" + bekeres3;
 
             if (bekeres < adatok.Count && bekeres >= 0)
             {
@@ -245,7 +243,7 @@ namespace Vernyomasnaplo
                 for (int i = 0; i < adatok.Count; i++)
                 {
                     string[] mezok = adatok[i].Split(';');
-                    Console.WriteLine($"Név: {mezok[0]}, Vérnyomás: {mezok[1]}, Pulzus: {mezok[2]}");
+                    Console.WriteLine($"Vérnyomás: {mezok[0]}, Pulzus: {mezok[1]}");
                 }
                 Console.WriteLine("\nNyomjon le egy billentyűt a kilépéshez.");
                 Console.ReadLine();
