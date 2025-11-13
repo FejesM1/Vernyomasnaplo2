@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Vernyomasnaplo
 {
@@ -15,41 +11,41 @@ namespace Vernyomasnaplo
         static bool bejelentkezve = false;
         static bool kivalasztva = false;
         static string[] menupontok = { "Regisztrálás", "Bejelentkezés", "Adatok hozzáadása", "Adatok módosítása", "Adatok megjelenítése", "Adat törlése", "Beállítások", "Kilépés" };
-        static Action[] fuggvenyek = { Regisztral, Bejelentkezes, AdatokHozzaadasa, Modosit, Megjelenit, Torol, Beallit, Kilep, };
+        static Action[] fuggvenyek = { Regisztral, Bejelentkezes, AdatokHozzaadasa, Modosit, Megjelenit, Torol, Beallit, Kilep };
         static int aktualis_menu_pont = 0;
         static int menupontok_szama = menupontok.Length;
+
         static ConsoleColor[] szinek = {
-                ConsoleColor.Green,
-                ConsoleColor.Red,
-                ConsoleColor.Blue,
-                ConsoleColor.Yellow,
+            ConsoleColor.Green, ConsoleColor.Red, ConsoleColor.Blue, ConsoleColor.Yellow,
+            ConsoleColor.Cyan, ConsoleColor.Magenta, ConsoleColor.Gray, ConsoleColor.Black
+        };
 
-                ConsoleColor.Cyan,
-                ConsoleColor.Magenta,
-                ConsoleColor.Gray,
-                ConsoleColor.Black
-            };
         static string[] szinek_neve = {
-                    "Zöld",
-                    "Piros",
-                    "Kék",
-                    "Sárga",
+            "Zöld","Piros","Kék","Sárga","Cian","Magenta","Szürke","Fekete"
+        };
 
-                    "Cian",
-                    "Magenta",
-                    "Szürke",
-                    "Fekete"
-                };
         static int szinek_szama = szinek.Length;
         static int alapszin = 0;
         static int alaphatter = 7;
 
+        // 🔹 Fájlok elérési útja a projekt gyökerében
+        static readonly string adatokFile = "Adatok.txt";
+        static readonly string felhasznalokFile = "Felhaszn.txt";
+
+        static List<string> adatok = new List<string>();
+
         static void Main(string[] args)
         {
+            // 🔹 Fájlok létrehozása, ha nem léteznek
+            if (!File.Exists(adatokFile)) File.Create(adatokFile).Close();
+            if (!File.Exists(felhasznalokFile)) File.Create(felhasznalokFile).Close();
+
+            // 🔹 Adatok beolvasása
             adatok.Clear();
-            foreach (var sor in File.ReadAllLines("Adatok.txt"))
+            foreach (var sor in File.ReadAllLines(adatokFile))
             {
-                adatok.Add(sor);
+                if (!string.IsNullOrWhiteSpace(sor))
+                    adatok.Add(sor);
             }
 
             while (fut)
@@ -69,30 +65,20 @@ namespace Vernyomasnaplo
                         else
                         {
                             Console.WriteLine(menupontok[i]);
-
                         }
                     }
+
                     switch (Console.ReadKey().Key)
                     {
                         case ConsoleKey.Enter:
                             kivalasztva = true;
                             break;
-
-
                         case ConsoleKey.UpArrow:
-                            if (aktualis_menu_pont > 0)
-                            {
-                                aktualis_menu_pont--;
-                            }
+                            if (aktualis_menu_pont > 0) aktualis_menu_pont--;
                             break;
-
                         case ConsoleKey.DownArrow:
-                            if (aktualis_menu_pont < menupontok_szama - 1)
-                            {
-                                aktualis_menu_pont++;
-                            }
+                            if (aktualis_menu_pont < menupontok_szama - 1) aktualis_menu_pont++;
                             break;
-
                         default:
                             Console.Beep();
                             break;
@@ -105,21 +91,20 @@ namespace Vernyomasnaplo
                         aktualis_menu_pont = 0;
                     }
                 }
-
                 catch (Exception e)
                 {
+                    Console.Clear();
                     Console.WriteLine("Hiba történt!");
-                    Console.WriteLine("Szeretné látni a hibát?");
-
+                    Console.WriteLine(e.Message);
+                    Console.ReadLine();
                 }
             }
-
         }
+
+        // 🔸 Felhasználó létezés ellenőrzés
         static bool FelhasznaloLetezik(string nev)
         {
-            if (!File.Exists("Felhaszn.txt")) return false;
-
-            foreach (var sor in File.ReadAllLines("Felhaszn.txt"))
+            foreach (var sor in File.ReadAllLines(felhasznalokFile))
             {
                 var adatok = sor.Split(';');
                 if (adatok.Length > 0 && adatok[0] == nev)
@@ -145,7 +130,7 @@ namespace Vernyomasnaplo
             Console.Write("Jelszó: ");
             string jelszo = Console.ReadLine();
 
-            File.AppendAllText("Felhaszn.txt", $"{nev};{jelszo}\n");
+            File.AppendAllText(felhasznalokFile, $"{nev};{jelszo}{Environment.NewLine}");
             Console.WriteLine("Sikeres regisztráció!");
             Console.ReadLine();
         }
@@ -160,15 +145,8 @@ namespace Vernyomasnaplo
             Console.Write("Jelszó: ");
             string jelszo = Console.ReadLine();
 
-            if (!File.Exists("Felhaszn.txt"))
-            {
-                Console.WriteLine("Még nincs regisztrált felhasználó!");
-                Console.ReadLine();
-                return;
-            }
-
             bool sikeres = false;
-            foreach (var sor in File.ReadAllLines("Felhaszn.txt"))
+            foreach (var sor in File.ReadAllLines(felhasznalokFile))
             {
                 var adatok = sor.Split(';');
                 if (adatok.Length >= 2 && adatok[0] == nev && adatok[1] == jelszo)
@@ -191,76 +169,118 @@ namespace Vernyomasnaplo
             Console.ReadLine();
         }
 
+        static void AdatokHozzaadasa()
+        {
+            Console.Clear();
+            Console.Write("Adja meg a vérnyomását: ");
+            int vernyomas = int.Parse(Console.ReadLine());
+            Console.Write("Adja meg a pulzusát: ");
+            int pulzus = int.Parse(Console.ReadLine());
+
+            string keszadat = $"{vernyomas};{pulzus}";
+            adatok.Add(keszadat);
+
+            File.AppendAllText(adatokFile, Environment.NewLine + keszadat);
+
+            Console.WriteLine("Adat hozzáadva.");
+            Console.ReadLine();
+        }
+
         static void Modosit()
         {
             Console.Clear();
-            int bekeres;
-            string adat;
+
+            if (adatok.Count == 0)
+            {
+                Console.WriteLine("Nincs módosítható adat!");
+                Console.ReadLine();
+                return;
+            }
 
             for (int i = 0; i < adatok.Count; i++)
             {
                 string[] mezok = adatok[i].Split(';');
-                Console.WriteLine($"Vérnyomás: {mezok[0]}, Pulzus: {mezok[1]}");
+                Console.WriteLine($"{i + 1}. Vérnyomás: {mezok[0]}, Pulzus: {mezok[1]}");
             }
 
-            Console.Write("Add a módosítandó sornak a számát: ");
-            bekeres = int.Parse(Console.ReadLine()) - 1;
-            Console.Write("Adja meg a vérnyomását: ");
-            int bekeres2 = int.Parse(Console.ReadLine());
-            Console.Write("Adja meg a pulzusát: ");
-            int bekeres3 = int.Parse(Console.ReadLine());
-            var keszadat = bekeres2 + ";" + bekeres3;
+            Console.Write("Add meg a módosítandó sorszámot: ");
+            int index = int.Parse(Console.ReadLine()) - 1;
 
-            if (bekeres < adatok.Count && bekeres >= 0)
+            if (index < 0 || index >= adatok.Count)
             {
-                adatok.RemoveAt(bekeres);
-                adatok.Insert(bekeres, keszadat);
-                File.WriteAllText("Adatok.txt", "");
-                for (int i = 0; i < adatok.Count; i++)
-                {
-                    adat = adatok[i];
-                    File.WriteAllText("Adatok.txt", adat + Environment.NewLine);
-                }
-                Console.WriteLine("Adat módosítva.");
-            }
-            else
-            {
-                Console.WriteLine("Nincs ilyen sorszámú adat!");
+                Console.WriteLine("Érvénytelen sorszám!");
                 Console.ReadLine();
+                return;
             }
+
+            Console.Write("Új vérnyomás: ");
+            int ujVernyomas = int.Parse(Console.ReadLine());
+            Console.Write("Új pulzus: ");
+            int ujPulzus = int.Parse(Console.ReadLine());
+
+            adatok[index] = $"{ujVernyomas};{ujPulzus}";
+
+            File.WriteAllLines(adatokFile, adatok);
+
+            Console.WriteLine("Adat módosítva.");
+            Console.ReadLine();
         }
-        static List<string> adatok = new List<string>();
+
         static void Megjelenit()
         {
             Console.Clear();
-            if (!File.Exists("Adatok.txt"))
+            Console.WriteLine("Adatok megjelenítése:\n");
+
+            if (adatok.Count == 0)
             {
-                Console.WriteLine("Az Adatok.txt nem található!");
+                Console.WriteLine("Nincs adat a listában.");
             }
             else
             {
-                Console.WriteLine("Adatok megjelenítése\n");
-                for (int i = 0; i < adatok.Count; i++)
+                foreach (var sor in adatok)
                 {
-                    string[] mezok = adatok[i].Split(';');
+                    var mezok = sor.Split(';');
                     Console.WriteLine($"Vérnyomás: {mezok[0]}, Pulzus: {mezok[1]}");
                 }
-                Console.WriteLine("\nNyomjon le egy billentyűt a kilépéshez.");
-                Console.ReadLine();
             }
-        }
-        static void AdatokHozzaadasa()
-        {
-            Console.Clear();
-            Console.WriteLine("Adatok hozzáadása");
+
+            Console.WriteLine("\nNyomjon Entert a visszatéréshez.");
             Console.ReadLine();
         }
+
         static void Torol()
         {
             Console.Clear();
-            Console.WriteLine("töröl");
+            if (adatok.Count == 0)
+            {
+                Console.WriteLine("Nincs törölhető adat.");
+                Console.ReadLine();
+                return;
+            }
+
+            for (int i = 0; i < adatok.Count; i++)
+            {
+                var mezok = adatok[i].Split(';');
+                Console.WriteLine($"{i + 1}. Vérnyomás: {mezok[0]}, Pulzus: {mezok[1]}");
+            }
+
+            Console.Write("Add meg a törlendő sorszámot: ");
+            int index = int.Parse(Console.ReadLine()) - 1;
+
+            if (index >= 0 && index < adatok.Count)
+            {
+                adatok.RemoveAt(index);
+                File.WriteAllLines(adatokFile, adatok);
+                Console.WriteLine("Adat törölve.");
+            }
+            else
+            {
+                Console.WriteLine("Érvénytelen sorszám!");
+            }
+
             Console.ReadLine();
         }
+
         static void Beallit()
         {
             string[] kiirni = { "Betű", "Háttér" };
@@ -274,8 +294,7 @@ namespace Vernyomasnaplo
                 {
                     if (aktualis == i)
                     {
-
-                        Console.ForegroundColor = szinek[aktualis];
+                        Console.ForegroundColor = szinek[alapszin];
                         Console.WriteLine(kiirni[i]);
                         Console.ForegroundColor = ConsoleColor.White;
                     }
@@ -293,39 +312,27 @@ namespace Vernyomasnaplo
                         {
                             megy = false;
                             if (aktualis == 0)
-                            {
                                 alapszin = szin;
-                            }
                             else
-                            {
                                 alaphatter = szin;
-                            }
                         }
                         else
                         {
                             Console.Clear();
-                            Console.WriteLine("Nem lehet a betű és a háttér azonos színű! Enterre tovább!!!");
+                            Console.WriteLine("Nem lehet a betű és a háttér azonos színű!");
                             Console.ReadLine();
                         }
-
-
                         break;
 
                     case ConsoleKey.DownArrow:
                         if (aktualis < kiirni.Length - 1)
-                        {
                             aktualis++;
-                        }
                         break;
-
                     case ConsoleKey.UpArrow:
                         if (aktualis > 0)
-                        {
                             aktualis--;
-                        }
                         break;
                 }
-
             }
         }
 
@@ -337,49 +344,36 @@ namespace Vernyomasnaplo
             {
                 Console.Clear();
 
-                Console.WriteLine();
                 for (int i = 0; i < szinek.Length; i++)
                 {
                     if (i == akt_szin_szama)
                     {
-
-                        Console.ForegroundColor = szinek[akt_szin_szama];
+                        Console.ForegroundColor = szinek[i];
                         Console.WriteLine(szinek_neve[i]);
                         Console.ForegroundColor = ConsoleColor.White;
-
                     }
                     else
                     {
                         Console.WriteLine(szinek_neve[i]);
                     }
                 }
+
                 switch (Console.ReadKey().Key)
                 {
                     case ConsoleKey.Enter:
                         kivalaszt = false;
-
                         break;
                     case ConsoleKey.UpArrow:
                         if (akt_szin_szama > 0)
-                        {
                             akt_szin_szama--;
-                        }
                         break;
-
                     case ConsoleKey.DownArrow:
                         if (akt_szin_szama < szinek_szama - 1)
-                        {
                             akt_szin_szama++;
-                        }
                         break;
-
-
-
-
                     default:
                         Console.Beep();
                         break;
-
                 }
             }
             return akt_szin_szama;
