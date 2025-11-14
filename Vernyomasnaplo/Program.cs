@@ -240,8 +240,6 @@ namespace Vernyomasnaplo
             else
             {
                 Console.WriteLine("Az Adatok.txt be nem került bele a felhasználó neved!");
-                Console.WriteLine(bejelentkezettFelhasznalo);
-                Console.WriteLine(nev);
                 Console.ReadLine();
             }
             File.WriteAllText(adatokFile, "");
