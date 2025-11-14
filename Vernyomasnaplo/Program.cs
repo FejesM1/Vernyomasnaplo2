@@ -285,7 +285,22 @@ namespace Vernyomasnaplo
 
             Console.Write("Adja meg a módosítandó mérés sorszámát: ");
             törles = int.Parse(Console.ReadLine());
-            
+            Console.Write("Add meg vérnyomásod: ");
+            int vernyomas = int.Parse(Console.ReadLine());
+            Console.Write("Add meg a pulzusod: ");
+            int pulzus = int.Parse(Console.ReadLine());
+            var modositas = $"{vernyomas};{pulzus}";
+
+            for(int i = 0; i < darab; i++)
+            {
+                //Itt ez még nem jó
+                adatok[index].Split('(')[1].Split('|')[törles-1].Replace(adatok[index].Split('(')[1].Split('|')[törles-1], modositas);
+            }
+            File.WriteAllText(adatokFile, "");
+            for (int i = 0; i < adatok.Count; i++)
+            {
+                File.AppendAllText(adatokFile, adatok[i] + Environment.NewLine);
+            }
             Console.WriteLine("Adat módosítva.");
             Console.ReadLine();
         }
