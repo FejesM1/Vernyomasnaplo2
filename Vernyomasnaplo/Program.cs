@@ -254,39 +254,38 @@ namespace Vernyomasnaplo
         static void Modosit()
         {
             Console.Clear();
-
-            if (adatok.Count == 0)
-            {
-                Console.WriteLine("Nincs módosítható adat!");
-                Console.ReadLine();
-                return;
-            }
-
+            bool talalat = false;
+            int index = 0;
             for (int i = 0; i < adatok.Count; i++)
             {
-                string[] mezok = adatok[i].Split(';');
-                Console.WriteLine($"{i + 1}. Vérnyomás: {mezok[1]}, Pulzus: {mezok[2]}");
+                if (adatok[i].Split('(')[0] == bejelentkezettFelhasznalo)
+                {
+                    talalat = true;
+                    index = i;
+                    break;
+                }
             }
 
-            Console.Write("Add meg a módosítandó sorszámot: ");
-            int index = int.Parse(Console.ReadLine()) - 1;
+            Console.WriteLine("Adatok megjelenítése:\n");
 
-            if (index < 0 || index >= adatok.Count)
+            int darab = adatok[index].Split('(')[1].Split('|').Count();
+            int törles;
+
+            if (talalat == true)
             {
-                Console.WriteLine("Érvénytelen sorszám!");
-                Console.ReadLine();
-                return;
+                Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]}\n");
+                if (adatok[index].Split('(')[1] != "")
+                {
+                    for (int i = 0; i < darab; i++)
+                    {
+                        Console.Write($"A(z) {i + 1}. mérés eredménye vérnyomás : {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]} pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}\n");
+                    }
+                }
             }
 
-            Console.Write("Új vérnyomás: ");
-            int ujVernyomas = int.Parse(Console.ReadLine());
-            Console.Write("Új pulzus: ");
-            int ujPulzus = int.Parse(Console.ReadLine());
-
-            adatok[index] = $"{ujVernyomas};{ujPulzus}";
-
-            File.WriteAllLines(adatokFile, adatok);
-
+            Console.Write("Adja meg a módosítandó mérés sorszámát: ");
+            törles = int.Parse(Console.ReadLine());
+            
             Console.WriteLine("Adat módosítva.");
             Console.ReadLine();
         }
@@ -312,7 +311,7 @@ namespace Vernyomasnaplo
                 Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]}\n");
                 if (adatok[index].Split('(')[1] != "")
                 {
-                    int darab = adatok[index].Split('|').Count();
+                    int darab = adatok[index].Split('(')[1].Split('|').Count();
                     for(int i = 0; i < darab; i++)
                     {
                         Console.Write($"A(z) {i+1}. mérés eredménye vérnyomás : {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]} pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}\n");
