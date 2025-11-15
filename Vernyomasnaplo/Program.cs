@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Configuration;
 using System.Reflection;
+using System.Threading;
 
 namespace Vernyomasnaplo
 {
@@ -283,7 +285,7 @@ namespace Vernyomasnaplo
                 }
             }
 
-            Console.Write("Adja meg a módosítandó mérés sorszámát: ");
+            Console.Write("\nAdja meg a módosítandó mérés sorszámát: ");
             törles = int.Parse(Console.ReadLine());
             Console.Write("Add meg vérnyomásod: ");
             int vernyomas = int.Parse(Console.ReadLine());
@@ -291,11 +293,13 @@ namespace Vernyomasnaplo
             int pulzus = int.Parse(Console.ReadLine());
             var modositas = $"{vernyomas};{pulzus}";
 
-            for(int i = 0; i < darab; i++)
-            {
-                //Itt ez még nem jó
-                adatok[index].Split('(')[1].Split('|')[törles-1].Replace(adatok[index].Split('(')[1].Split('|')[törles-1], modositas);
-            }
+            var start = adatok[index].IndexOf(adatok[index].Split('(')[1].Split('|')[törles - 1]);
+            var vege = adatok[index].Split('(')[1].Split('|')[törles-1].Length;
+
+            adatok[index] = adatok[index].Remove(start, vege);
+
+            adatok[index] = adatok[index].Insert(start, modositas);
+
             File.WriteAllText(adatokFile, "");
             for (int i = 0; i < adatok.Count; i++)
             {
