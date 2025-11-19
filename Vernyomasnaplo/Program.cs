@@ -28,7 +28,7 @@ namespace Vernyomasnaplo
             "Zöld","Piros","Kék","Sárga","Cian","Magenta","Szürke","Fekete"
         };
 
-     
+
 
         static int szinek_szama = szinek.Length;
         static int alapszin = 0;
@@ -53,10 +53,10 @@ namespace Vernyomasnaplo
                 if (!string.IsNullOrWhiteSpace(sor))
                     adatok.Add(sor);
             }
-         
+
             while (fut)
             {
-                Console.BackgroundColor = szinek[alaphatter];
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.Clear();
 
                 int startIndex = bejelentkezve ? 2 : 0;
@@ -96,9 +96,9 @@ namespace Vernyomasnaplo
                             aktualis_menu_pont--;
                         else
                         {
-                            aktualis_menu_pont = endIndex-1 ;
+                            aktualis_menu_pont = endIndex - 1;
                         }
-                            break;
+                        break;
 
                     case ConsoleKey.DownArrow:
                         if (aktualis_menu_pont < endIndex - 1)
@@ -107,14 +107,14 @@ namespace Vernyomasnaplo
                         {
                             aktualis_menu_pont = 2;
                         }
-                            break;
+                        break;
 
                     default:
                         Console.Beep();
                         break;
                 }
 
-                
+
             }
         }
 
@@ -141,7 +141,7 @@ namespace Vernyomasnaplo
             if (string.IsNullOrEmpty(nev))
             {
                 Console.WriteLine("A felhasználónév nem lehet üres!");
-                Console.ReadLine(); 
+                Console.ReadLine();
                 return;
             }
 
@@ -181,7 +181,7 @@ namespace Vernyomasnaplo
             {
                 Console.WriteLine("A felhasználónév nem lehet üres!");
                 Console.ReadLine();
-                return; 
+                return;
             }
 
             Console.Write("Jelszó: ");
@@ -312,7 +312,7 @@ namespace Vernyomasnaplo
             var modositas = $"{vernyomas};{pulzus}";
 
             var start = adatok[index].IndexOf(adatok[index].Split('(')[1].Split('|')[törles - 1]);
-            var vege = adatok[index].Split('(')[1].Split('|')[törles-1].Length;
+            var vege = adatok[index].Split('(')[1].Split('|')[törles - 1].Length;
 
             adatok[index] = adatok[index].Remove(start, vege);
 
@@ -351,9 +351,9 @@ namespace Vernyomasnaplo
                 if (adatok[index].Split('(')[1] != "")
                 {
                     int darab = adatok[index].Split('(')[1].Split('|').Count();
-                    for(int i = 0; i < darab; i++)
+                    for (int i = 0; i < darab; i++)
                     {
-                        Console.Write($"A(z) {i+1}. mérés eredménye vérnyomás : {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]} pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}\n");
+                        Console.Write($"A(z) {i + 1}. mérés eredménye vérnyomás : {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]} pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}\n");
                     }
                 }
             }
@@ -426,15 +426,15 @@ namespace Vernyomasnaplo
                         {
                             aktualis = 0;
                         }
-                            break;
+                        break;
                     case ConsoleKey.UpArrow:
                         if (aktualis > 0)
                             aktualis--;
                         else
                         {
-                            aktualis = kiirni.Length-1;
+                            aktualis = kiirni.Length - 1;
                         }
-                            break;
+                        break;
                     case ConsoleKey.LeftArrow:
                         megy = false;
                         break;
@@ -448,7 +448,7 @@ namespace Vernyomasnaplo
             Console.ForegroundColor = szinek[alapszin];
             bool kivalaszt = true;
             int akt_szin_szama = 0;
-          
+
             while (kivalaszt)
             {
                 Console.Clear();
@@ -456,7 +456,7 @@ namespace Vernyomasnaplo
                 for (int i = 0; i < szinek.Length; i++)
                 {
 
-                 
+
 
                     if (i == akt_szin_szama)
                     {
@@ -471,7 +471,7 @@ namespace Vernyomasnaplo
                     {
                         Console.WriteLine(szinek_neve[i]);
                     }
-                
+
                 }
 
                 switch (Console.ReadKey().Key)
@@ -480,36 +480,36 @@ namespace Vernyomasnaplo
                         kivalaszt = false;
                         break;
                     case ConsoleKey.UpArrow:
-                   
+
                         if (akt_szin_szama > 0)
                             akt_szin_szama--;
                         else
                         {
-                            akt_szin_szama = szinek_szama-1;
+                            akt_szin_szama = szinek_szama - 1;
                         }
-                            break;
+                        break;
                     case ConsoleKey.DownArrow:
-                        
+
                         if (akt_szin_szama < szinek_szama - 1)
                             akt_szin_szama++;
                         else
                         {
                             akt_szin_szama = 0;
                         }
-                            break;
+                        break;
                     default:
                         Console.Beep();
                         break;
                     case ConsoleKey.LeftArrow:
                         kivalaszt = false;
                         return -1;
-                 
+
                 }
             }
-            
-            
-             return akt_szin_szama;
-         
+
+
+            return akt_szin_szama;
+
         }
 
         static void Kilep()
