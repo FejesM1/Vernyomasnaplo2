@@ -413,12 +413,7 @@ namespace Vernyomasnaplo
                             else
                                 alaphatter = szin;
                         }
-                        else
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Nem lehet a betű és a háttér azonos színű!");
-                            Console.ReadLine();
-                        }
+                   
                         break;
 
                     case ConsoleKey.DownArrow:
@@ -446,8 +441,27 @@ namespace Vernyomasnaplo
 
         static int Szinvalaszto()
         {
+
+
+
             Console.BackgroundColor = szinek[alaphatter];
             Console.ForegroundColor = szinek[alapszin];
+
+
+            ConsoleColor[] szinek_kicsi = new ConsoleColor[szinek.Length - 1];
+            string[] szinek_neve_kicsi = new string[szinek_neve.Length - 1];
+            int jo_index = 0;
+            for (int i = 0; i < szinek.Length; i++)
+            {
+                if (i == alapszin || i==alaphatter)
+                    continue; // ezt a színt kihagyjuk
+
+                szinek_kicsi[jo_index] = szinek[i];
+                szinek_neve_kicsi[jo_index] = szinek_neve[i];
+                jo_index++;
+            }
+
+
             bool kivalaszt = true;
             int akt_szin_szama = 0;
 
@@ -455,7 +469,7 @@ namespace Vernyomasnaplo
             {
                 Console.Clear();
 
-                for (int i = 0; i < szinek.Length; i++)
+                for (int i = 0; i < szinek_kicsi.Length; i++)
                 {
 
 
@@ -463,15 +477,15 @@ namespace Vernyomasnaplo
                     if (i == akt_szin_szama)
                     {
 
-                        Console.ForegroundColor = szinek[i];
-                        Console.WriteLine(szinek_neve[i]);
+                        Console.ForegroundColor = szinek_kicsi[i];
+                        Console.WriteLine(szinek_neve_kicsi[i]);
                         Console.ForegroundColor = ConsoleColor.White;
 
 
                     }
                     else
                     {
-                        Console.WriteLine(szinek_neve[i]);
+                        Console.WriteLine(szinek_neve_kicsi[i]);
                     }
 
                 }
@@ -487,12 +501,12 @@ namespace Vernyomasnaplo
                             akt_szin_szama--;
                         else
                         {
-                            akt_szin_szama = szinek_szama - 1;
+                            akt_szin_szama = szinek_szama - 3;
                         }
                         break;
                     case ConsoleKey.DownArrow:
 
-                        if (akt_szin_szama < szinek_szama - 1)
+                        if (akt_szin_szama < szinek_szama - 3)
                             akt_szin_szama++;
                         else
                         {
@@ -509,8 +523,8 @@ namespace Vernyomasnaplo
                 }
             }
 
-
-            return akt_szin_szama;
+            int vissza= Array.IndexOf(szinek, szinek_kicsi[akt_szin_szama]);
+            return vissza;
 
         }
 
