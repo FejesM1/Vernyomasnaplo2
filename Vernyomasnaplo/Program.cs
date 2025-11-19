@@ -53,12 +53,14 @@ namespace Vernyomasnaplo
                 if (!string.IsNullOrWhiteSpace(sor))
                     adatok.Add(sor);
             }
-
+            Console.BackgroundColor = szinek[alaphatter];
             while (fut)
             {
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.Clear();
+                Console.BackgroundColor = szinek[alaphatter];
 
+                Console.Clear();
+               
                 int startIndex = bejelentkezve ? 2 : 0;
                 int endIndex = bejelentkezve ? menupontok.Length : 2;
 
