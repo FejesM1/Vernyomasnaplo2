@@ -28,6 +28,8 @@ namespace Vernyomasnaplo
             "Zöld","Piros","Kék","Sárga","Cian","Magenta","Szürke","Fekete"
         };
 
+     
+
         static int szinek_szama = szinek.Length;
         static int alapszin = 0;
         static int alaphatter = 7;
@@ -51,7 +53,7 @@ namespace Vernyomasnaplo
                 if (!string.IsNullOrWhiteSpace(sor))
                     adatok.Add(sor);
             }
-
+         
             while (fut)
             {
                 Console.BackgroundColor = szinek[alaphatter];
@@ -92,12 +94,20 @@ namespace Vernyomasnaplo
                     case ConsoleKey.UpArrow:
                         if (aktualis_menu_pont > startIndex)
                             aktualis_menu_pont--;
-                        break;
+                        else
+                        {
+                            aktualis_menu_pont = endIndex-1 ;
+                        }
+                            break;
 
                     case ConsoleKey.DownArrow:
                         if (aktualis_menu_pont < endIndex - 1)
                             aktualis_menu_pont++;
-                        break;
+                        else
+                        {
+                            aktualis_menu_pont = 2;
+                        }
+                            break;
 
                     default:
                         Console.Beep();
@@ -122,6 +132,8 @@ namespace Vernyomasnaplo
 
         static void Regisztral()
         {
+            Console.BackgroundColor = szinek[alaphatter];
+            Console.ForegroundColor = szinek[alapszin];
             Console.Clear();
             Console.WriteLine("Regisztrálás:\n");
             Console.Write("Felhasználónév: ");
@@ -157,6 +169,8 @@ namespace Vernyomasnaplo
 
         static void Bejelentkezes()
         {
+            Console.BackgroundColor = szinek[alaphatter];
+            Console.ForegroundColor = szinek[alapszin];
             Console.Clear();
             Console.WriteLine("Bejelentkezés:\n");
 
@@ -206,6 +220,8 @@ namespace Vernyomasnaplo
 
         static void AdatokHozzaadasa()
         {
+            Console.BackgroundColor = szinek[alaphatter];
+            Console.ForegroundColor = szinek[alapszin];
             Console.Clear();
             bool talalat = false;
             string nev = "";
@@ -255,6 +271,8 @@ namespace Vernyomasnaplo
 
         static void Modosit()
         {
+            Console.BackgroundColor = szinek[alaphatter];
+            Console.ForegroundColor = szinek[alapszin];
             Console.Clear();
             bool talalat = false;
             int index = 0;
@@ -311,6 +329,8 @@ namespace Vernyomasnaplo
 
         static void Megjelenit()
         {
+            Console.BackgroundColor = szinek[alaphatter];
+            Console.ForegroundColor = szinek[alapszin];
             Console.Clear();
             bool talalat = false;
             int index = 0;
@@ -344,12 +364,16 @@ namespace Vernyomasnaplo
 
         static void Torol()
         {
+            Console.BackgroundColor = szinek[alaphatter];
+            Console.ForegroundColor = szinek[alapszin];
             Console.Clear();
             Console.ReadLine();
         }
 
         static void Beallit()
         {
+            Console.BackgroundColor = szinek[alaphatter];
+            Console.ForegroundColor = szinek[alapszin];
             string[] kiirni = { "Betű", "Háttér" };
             bool megy = true;
             int aktualis = 0;
@@ -375,6 +399,10 @@ namespace Vernyomasnaplo
                 {
                     case ConsoleKey.Enter:
                         int szin = Szinvalaszto();
+                        if (szin == -1)
+                        {
+                            break;
+                        }
                         if (alaphatter != szin && alapszin != szin)
                         {
                             megy = false;
@@ -394,10 +422,21 @@ namespace Vernyomasnaplo
                     case ConsoleKey.DownArrow:
                         if (aktualis < kiirni.Length - 1)
                             aktualis++;
-                        break;
+                        else
+                        {
+                            aktualis = 0;
+                        }
+                            break;
                     case ConsoleKey.UpArrow:
                         if (aktualis > 0)
                             aktualis--;
+                        else
+                        {
+                            aktualis = kiirni.Length-1;
+                        }
+                            break;
+                    case ConsoleKey.LeftArrow:
+                        megy = false;
                         break;
                 }
             }
@@ -405,24 +444,34 @@ namespace Vernyomasnaplo
 
         static int Szinvalaszto()
         {
+            Console.BackgroundColor = szinek[alaphatter];
+            Console.ForegroundColor = szinek[alapszin];
             bool kivalaszt = true;
             int akt_szin_szama = 0;
+          
             while (kivalaszt)
             {
                 Console.Clear();
 
                 for (int i = 0; i < szinek.Length; i++)
                 {
+
+                 
+
                     if (i == akt_szin_szama)
                     {
+
                         Console.ForegroundColor = szinek[i];
                         Console.WriteLine(szinek_neve[i]);
                         Console.ForegroundColor = ConsoleColor.White;
+
+
                     }
                     else
                     {
                         Console.WriteLine(szinek_neve[i]);
                     }
+                
                 }
 
                 switch (Console.ReadKey().Key)
@@ -431,19 +480,36 @@ namespace Vernyomasnaplo
                         kivalaszt = false;
                         break;
                     case ConsoleKey.UpArrow:
+                   
                         if (akt_szin_szama > 0)
                             akt_szin_szama--;
-                        break;
+                        else
+                        {
+                            akt_szin_szama = szinek_szama-1;
+                        }
+                            break;
                     case ConsoleKey.DownArrow:
+                        
                         if (akt_szin_szama < szinek_szama - 1)
                             akt_szin_szama++;
-                        break;
+                        else
+                        {
+                            akt_szin_szama = 0;
+                        }
+                            break;
                     default:
                         Console.Beep();
                         break;
+                    case ConsoleKey.LeftArrow:
+                        kivalaszt = false;
+                        return -1;
+                 
                 }
             }
-            return akt_szin_szama;
+            
+            
+             return akt_szin_szama;
+         
         }
 
         static void Kilep()
