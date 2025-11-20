@@ -142,7 +142,13 @@ namespace Vernyomasnaplo
             Console.BackgroundColor = szinek[alaphatter];
             Console.ForegroundColor = szinek[alapszin];
             Console.Clear();
-            Console.WriteLine("Regisztrálás:\n");
+            Console.WriteLine("╔════════════════════════╗");
+            Console.WriteLine("║                        ║");
+            Console.WriteLine("║      Regisztrálás      ║");
+            Console.WriteLine("║                        ║");
+            Console.WriteLine("╚════════════════════════╝");
+        
+        Console.WriteLine("Regisztrálás:\n");
             Console.Write("Felhasználónév: ");
             string nev = Console.ReadLine()?.Trim();
             if (string.IsNullOrEmpty(nev))
@@ -182,7 +188,13 @@ namespace Vernyomasnaplo
             Console.BackgroundColor = szinek[alaphatter];
             Console.ForegroundColor = szinek[alapszin];
             Console.Clear();
-            Console.WriteLine("Bejelentkezés:\n");
+            Console.WriteLine("╔════════════════════════╗");
+            Console.WriteLine("║                        ║");
+            Console.WriteLine("║      Bejelentkezés     ║");
+            Console.WriteLine("║                        ║");
+            Console.WriteLine("╚════════════════════════╝");
+        
+        Console.WriteLine("Bejelentkezés:\n");
 
             Console.Write("Felhasználónév: ");
             string nev = Console.ReadLine()?.Trim();
@@ -210,6 +222,7 @@ namespace Vernyomasnaplo
                 var adatok = sor.Split(';');
                 if (adatok.Length >= 2 && adatok[0] == nev && adatok[1] == jelszo)
                 {
+                    szul_datum = Convert.ToDateTime(adatok[2]);
                     sikeres = true;
                     break;
                 }
@@ -233,7 +246,13 @@ namespace Vernyomasnaplo
             Console.BackgroundColor = szinek[alaphatter];
             Console.ForegroundColor = szinek[alapszin];
             Console.Clear();
-            bool talalat = false;
+            Console.WriteLine("╔════════════════════════╗");
+            Console.WriteLine("║                        ║");
+            Console.WriteLine("║   Adatok hozzáadása    ║");
+            Console.WriteLine("║                        ║");
+            Console.WriteLine("╚════════════════════════╝");
+        
+        bool talalat = false;
             string nev = "";
             int index = 0;
             DateTime most = DateTime.Now;
@@ -292,7 +311,13 @@ namespace Vernyomasnaplo
             Console.BackgroundColor = szinek[alaphatter];
             Console.ForegroundColor = szinek[alapszin];
             Console.Clear();
-            bool talalat = false;
+            Console.WriteLine("╔════════════════════════╗");
+            Console.WriteLine("║                        ║");
+            Console.WriteLine("║   Adatok módosítása    ║");
+            Console.WriteLine("║                        ║");
+            Console.WriteLine("╚════════════════════════╝");
+        
+        bool talalat = false;
             int index = 0;
             for (int i = 0; i < adatok.Count; i++)
             {
@@ -355,7 +380,13 @@ namespace Vernyomasnaplo
             Console.BackgroundColor = szinek[alaphatter];
             Console.ForegroundColor = szinek[alapszin];
             Console.Clear();
-            DateTime most = DateTime.Now;
+            Console.WriteLine("╔════════════════════════╗");
+            Console.WriteLine("║                        ║");
+            Console.WriteLine("║  Adatok megjelenítése  ║");
+            Console.WriteLine("║                        ║");
+            Console.WriteLine("╚════════════════════════╝");
+        
+        DateTime most = DateTime.Now;
             int eletkor = most.Year - szul_datum.Year;
             bool talalat = false;
             int index = 0;
@@ -403,7 +434,13 @@ namespace Vernyomasnaplo
             Console.BackgroundColor = szinek[alaphatter];
             Console.ForegroundColor = szinek[alapszin];
             Console.Clear();
-            Console.ReadLine();
+            Console.WriteLine("╔════════════════════════╗");
+            Console.WriteLine("║                        ║");
+            Console.WriteLine("║     Adatok törlése     ║");
+            Console.WriteLine("║                        ║");
+            Console.WriteLine("╚════════════════════════╝");
+        
+        Console.ReadLine();
         }
 
         static string pulzusfigyelo(int pulzus)
