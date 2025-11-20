@@ -228,6 +228,8 @@ namespace Vernyomasnaplo
             bool talalat = false;
             string nev = "";
             int index = 0;
+            DateTime most = DateTime.Now;
+
             for (int i = 0; i < adatok.Count; i++)
             {
                 if (adatok[i].Split('(')[0] == bejelentkezettFelhasznalo)
@@ -240,12 +242,14 @@ namespace Vernyomasnaplo
             }
             if (talalat == true)
             {
-                Console.Write("Adja meg a vérnyomását: ");
-                int vernyomas = int.Parse(Console.ReadLine());
+                Console.Write("Adja meg a sziasztolést: ");
+                int szisztoles = int.Parse(Console.ReadLine());
+                Console.Write("Adja meg a diasztolést: ");
+                int diasztoles = int.Parse(Console.ReadLine());
                 Console.Write("Adja meg a pulzusát: ");
                 int pulzus = int.Parse(Console.ReadLine());
 
-                string keszadat = $"{vernyomas};{pulzus}";
+                string keszadat = $"{szisztoles};{diasztoles};{pulzus};{most}";
 
                 if (adatok[index].Split('(')[1] != "")
                 {
@@ -292,6 +296,7 @@ namespace Vernyomasnaplo
 
             int darab = adatok[index].Split('(')[1].Split('|').Count();
             int törles;
+            DateTime most = DateTime.Now;
 
             if (talalat == true)
             {
@@ -300,18 +305,20 @@ namespace Vernyomasnaplo
                 {
                     for (int i = 0; i < darab; i++)
                     {
-                        Console.Write($"A(z) {i + 1}. mérés eredménye vérnyomás : {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]} pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}\n");
+                        Console.Write($"A(z) {i + 1}. mérés eredménye {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]} szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]} diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]} pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n");
                     }
                 }
             }
 
             Console.Write("\nAdja meg a módosítandó mérés sorszámát: ");
             törles = int.Parse(Console.ReadLine());
-            Console.Write("Add meg vérnyomásod: ");
-            int vernyomas = int.Parse(Console.ReadLine());
-            Console.Write("Add meg a pulzusod: ");
+            Console.Write("Adja meg a sziasztolést: ");
+            int szisztoles = int.Parse(Console.ReadLine());
+            Console.Write("Adja meg a diasztolést: ");
+            int diasztoles = int.Parse(Console.ReadLine());
+            Console.Write("Adja meg a pulzusát: ");
             int pulzus = int.Parse(Console.ReadLine());
-            var modositas = $"{vernyomas};{pulzus}";
+            var modositas = $"{szisztoles};{diasztoles};{pulzus};{most}";
 
             var start = adatok[index].IndexOf(adatok[index].Split('(')[1].Split('|')[törles - 1]);
             var vege = adatok[index].Split('(')[1].Split('|')[törles - 1].Length;
@@ -355,7 +362,7 @@ namespace Vernyomasnaplo
                     int darab = adatok[index].Split('(')[1].Split('|').Count();
                     for (int i = 0; i < darab; i++)
                     {
-                        Console.Write($"A(z) {i + 1}. mérés eredménye vérnyomás : {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]} pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}\n");
+                        Console.Write($"A(z) {i + 1}. mérés eredménye {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]} szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]} diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]} pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n");
                     }
                 }
             }
