@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Configuration;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -403,6 +404,48 @@ namespace Vernyomasnaplo
             Console.ForegroundColor = szinek[alapszin];
             Console.Clear();
             Console.ReadLine();
+        }
+
+        static string pulzusfigyelo(int pulzus)
+        {
+            Console.BackgroundColor = szinek[alaphatter];
+            Console.ForegroundColor = szinek[alapszin];
+            Console.Clear();
+            DateTime most = DateTime.Now;
+            int eletkor = most.Year - szul_datum.Year;
+
+            if (eletkor >= 0 && eletkor <= 1) // Csecsemő
+            {
+                if (pulzus < 120) return "Alacsony a pulzusod.";
+                else if (pulzus > 160) return "Magas a pulzusod.";
+            }
+            else if (eletkor > 1 && eletkor <= 2) // Kisgyermek
+            {
+                if (pulzus < 110) return "Alacsony a pulzusod.";
+                else if (pulzus > 150) return "Magas a pulzusod.";
+            }
+            else if (eletkor > 2 && eletkor <= 5) // Óvodás
+            {
+                if (pulzus < 80) return "Alacsony a pulzusod.";
+                else if (pulzus > 120) return "Magas a pulzusod.";
+            }
+            else if (eletkor > 5 && eletkor <= 12) // Iskolás
+            {
+                if (pulzus < 70) return "Alacsony a pulzusod.";
+                else if (pulzus > 110) return "Magas a pulzusod.";
+            }
+            else if (eletkor > 12 && eletkor <= 18) // Serdülő
+            {
+                if (pulzus < 60) return "Alacsony a pulzusod.";
+                else if (pulzus > 100) return "Magas a pulzusod.";
+            }
+            else if (eletkor >= 19) // Felnőttek (19 év felett)
+            {
+                if (pulzus < 60) return "Alacsony a pulzusod.";
+                else if (pulzus > 100) return "Magas a pulzusod.";
+            }
+
+            return "Normális a pulzusod.";
         }
 
         static void Beallit()
