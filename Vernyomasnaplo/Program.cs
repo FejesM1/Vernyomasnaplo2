@@ -379,7 +379,7 @@ namespace Vernyomasnaplo
                     for (int i = 0; i < darab; i++)
                     {
                         Console.Write($"A(z) {i + 1}. mérés eredménye {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]} szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]} diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]} pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n" +
-                            $"{Vernyomas(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]),int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]))}\n");
+                            $"{Vernyomas(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]),int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]))}  {pulzusfigyelo(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]))}\n");
                     }
                 }
             }
@@ -408,9 +408,7 @@ namespace Vernyomasnaplo
 
         static string pulzusfigyelo(int pulzus)
         {
-            Console.BackgroundColor = szinek[alaphatter];
-            Console.ForegroundColor = szinek[alapszin];
-            Console.Clear();
+           
             DateTime most = DateTime.Now;
             int eletkor = most.Year - szul_datum.Year;
 
