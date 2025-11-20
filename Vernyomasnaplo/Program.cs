@@ -11,6 +11,7 @@ namespace Vernyomasnaplo
 {
     internal class Program
     {
+        static DateTime szul_datum;
         static bool fut = true;
         static string bejelentkezettFelhasznalo = "";
         static bool bejelentkezve = false;
@@ -155,7 +156,7 @@ namespace Vernyomasnaplo
                 return;
             }
             Console.Write("Születési dátum: ");
-            DateTime szul_datum = DateTime.Parse(Console.ReadLine());
+            szul_datum = DateTime.Parse(Console.ReadLine());
             
 
             Console.Write("Jelszó: ");
@@ -301,10 +302,11 @@ namespace Vernyomasnaplo
             int darab = adatok[index].Split('(')[1].Split('|').Count();
             int törles;
             DateTime most = DateTime.Now;
+            int eletkor = most.Year - szul_datum.Year;
 
             if (talalat == true)
             {
-                Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]}\n");
+                Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]} ({eletkor} éves)\n");
                 if (adatok[index].Split('(')[1] != "")
                 {
                     for (int i = 0; i < darab; i++)
@@ -345,6 +347,8 @@ namespace Vernyomasnaplo
             Console.BackgroundColor = szinek[alaphatter];
             Console.ForegroundColor = szinek[alapszin];
             Console.Clear();
+            DateTime most = DateTime.Now;
+            int eletkor = most.Year - szul_datum.Year;
             bool talalat = false;
             int index = 0;
             for (int i = 0; i < adatok.Count; i++)
@@ -360,7 +364,7 @@ namespace Vernyomasnaplo
 
             if (talalat == true)
             {
-                Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]}\n");
+                Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]} ({eletkor} éves)\n");
                 if (adatok[index].Split('(')[1] != "")
                 {
                     int darab = adatok[index].Split('(')[1].Split('|').Count();
