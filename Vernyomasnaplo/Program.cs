@@ -377,13 +377,24 @@ namespace Vernyomasnaplo
                     int darab = adatok[index].Split('(')[1].Split('|').Count();
                     for (int i = 0; i < darab; i++)
                     {
-                        Console.Write($"A(z) {i + 1}. mérés eredménye {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]} szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]} diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]} pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n");
+                        Console.Write($"A(z) {i + 1}. mérés eredménye {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]} szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]} diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]} pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n" +
+                            $"{Vernyomas(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]),int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]))}\n");
                     }
                 }
             }
 
             Console.WriteLine("\nNyomjon Entert a visszatéréshez.");
             Console.ReadLine();
+        }
+
+        static string Vernyomas(int szisztoles, int diasztoles)
+        {
+            if (szisztoles <= 90 && diasztoles <= 60) { return "Figyelem: a vérnyomás értéke alacsony."; }
+            else if (szisztoles <= 120 && diasztoles <= 80) { return "A vérnyomása normális."; }
+            else if (szisztoles <= 140 && diasztoles <= 90) { return "Figyelem: a vérnyomása emelkedett."; }
+            else if (szisztoles <= 160 && diasztoles <= 100) { return "Figyelem: a vérnyomás értéke magas! Ez 1. fokú hipertónia."; }
+            else if (szisztoles <= 180 && diasztoles <= 110) { return "Figyelem: a vérnyomás értéke magas! Ez 2. fokú hipertónia."; }
+            else { return "Figyelem: a vérnyomás értéke magas! Ez 3. fokú hipertónia."; }
         }
 
         static void Torol()
