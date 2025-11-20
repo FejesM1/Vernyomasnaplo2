@@ -5,12 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Net.Configuration;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Vernyomasnaplo
 {
     internal class Program
     {
+        
         static DateTime szul_datum;
         static bool fut = true;
         static string bejelentkezettFelhasznalo = "";
@@ -247,12 +249,16 @@ namespace Vernyomasnaplo
             }
             if (talalat == true)
             {
-                Console.Write("Adja meg a sziasztolést: ");
+                Console.Write("Adja meg a szisztolést: ");
                 int szisztoles = int.Parse(Console.ReadLine());
-                Console.Write("Adja meg a diasztolést: ");
+                
+                    Console.Write("Adja meg a diasztolést: ");
                 int diasztoles = int.Parse(Console.ReadLine());
+                
+                
                 Console.Write("Adja meg a pulzusát: ");
                 int pulzus = int.Parse(Console.ReadLine());
+                
 
                 string keszadat = $"{szisztoles};{diasztoles};{pulzus};{most}";
 
@@ -303,7 +309,7 @@ namespace Vernyomasnaplo
             int törles;
             DateTime most = DateTime.Now;
             int eletkor = most.Year - szul_datum.Year;
-
+            
             if (talalat == true)
             {
                 Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]} ({eletkor} éves)\n");
@@ -324,7 +330,8 @@ namespace Vernyomasnaplo
             int diasztoles = int.Parse(Console.ReadLine());
             Console.Write("Adja meg a pulzusát: ");
             int pulzus = int.Parse(Console.ReadLine());
-            var modositas = $"{szisztoles};{diasztoles};{pulzus};{most}";
+
+            var modositas = $"{szisztoles};{diasztoles};{pulzus};{adatok[index].Split('(')[1].Split('|')[törles-1].Split(';')[3]}";
 
             var start = adatok[index].IndexOf(adatok[index].Split('(')[1].Split('|')[törles - 1]);
             var vege = adatok[index].Split('(')[1].Split('|')[törles - 1].Length;
