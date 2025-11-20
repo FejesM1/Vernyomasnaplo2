@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -153,6 +154,9 @@ namespace Vernyomasnaplo
                 Console.ReadLine();
                 return;
             }
+            Console.Write("Születési dátum: ");
+            DateTime szul_datum = DateTime.Parse(Console.ReadLine());
+            
 
             Console.Write("Jelszó: ");
             string jelszo = Console.ReadLine()?.Trim();
@@ -162,7 +166,7 @@ namespace Vernyomasnaplo
                 Console.ReadLine();
                 return;
             }
-            File.AppendAllText(felhasznalokFile, $"{nev};{jelszo}{Environment.NewLine}");
+            File.AppendAllText(felhasznalokFile, $"{nev};{jelszo};{szul_datum}{Environment.NewLine}");
             File.AppendAllText(adatokFile, $"{nev}({Environment.NewLine}");
             adatok.Add($"{nev}(");
             Console.WriteLine("Sikeres regisztráció!");
