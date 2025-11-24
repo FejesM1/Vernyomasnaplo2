@@ -13,7 +13,7 @@ namespace Vernyomasnaplo
 {
     internal class Program
     {
-        
+
         static DateTime szul_datum;
         static bool fut = true;
         static string bejelentkezettFelhasznalo = "";
@@ -65,7 +65,7 @@ namespace Vernyomasnaplo
                 Console.BackgroundColor = szinek[alaphatter];
 
                 Console.Clear();
-               
+
                 int startIndex = bejelentkezve ? 2 : 0;
                 int endIndex = bejelentkezve ? menupontok.Length : 2;
 
@@ -147,8 +147,8 @@ namespace Vernyomasnaplo
             Console.WriteLine("║      Regisztrálás      ║");
             Console.WriteLine("║                        ║");
             Console.WriteLine("╚════════════════════════╝");
-        
-        Console.WriteLine("Regisztrálás:\n");
+
+            Console.WriteLine("Regisztrálás:\n");
             Console.Write("Felhasználónév: ");
             string nev = Console.ReadLine()?.Trim();
             if (string.IsNullOrEmpty(nev))
@@ -166,7 +166,7 @@ namespace Vernyomasnaplo
             }
             Console.Write("Születési dátum: ");
             szul_datum = DateTime.Parse(Console.ReadLine());
-            
+
 
             Console.Write("Jelszó: ");
             string jelszo = Console.ReadLine()?.Trim();
@@ -193,8 +193,8 @@ namespace Vernyomasnaplo
             Console.WriteLine("║      Bejelentkezés     ║");
             Console.WriteLine("║                        ║");
             Console.WriteLine("╚════════════════════════╝");
-        
-        Console.WriteLine("Bejelentkezés:\n");
+
+            Console.WriteLine("Bejelentkezés:\n");
 
             Console.Write("Felhasználónév: ");
             string nev = Console.ReadLine()?.Trim();
@@ -251,8 +251,8 @@ namespace Vernyomasnaplo
             Console.WriteLine("║   Adatok hozzáadása    ║");
             Console.WriteLine("║                        ║");
             Console.WriteLine("╚════════════════════════╝");
-        
-        bool talalat = false;
+
+            bool talalat = false;
             string nev = "";
             int index = 0;
             DateTime most = DateTime.Now;
@@ -271,14 +271,14 @@ namespace Vernyomasnaplo
             {
                 Console.Write("Adja meg a szisztolést: ");
                 int szisztoles = int.Parse(Console.ReadLine());
-                
-                    Console.Write("Adja meg a diasztolést: ");
+
+                Console.Write("Adja meg a diasztolést: ");
                 int diasztoles = int.Parse(Console.ReadLine());
-                
-                
+
+
                 Console.Write("Adja meg a pulzusát: ");
                 int pulzus = int.Parse(Console.ReadLine());
-                
+
 
                 string keszadat = $"{szisztoles};{diasztoles};{pulzus};{most}";
 
@@ -316,8 +316,8 @@ namespace Vernyomasnaplo
             Console.WriteLine("║   Adatok módosítása    ║");
             Console.WriteLine("║                        ║");
             Console.WriteLine("╚════════════════════════╝");
-        
-        bool talalat = false;
+
+            bool talalat = false;
             int index = 0;
             for (int i = 0; i < adatok.Count; i++)
             {
@@ -335,7 +335,7 @@ namespace Vernyomasnaplo
             int törles;
             DateTime most = DateTime.Now;
             int eletkor = most.Year - szul_datum.Year;
-            
+
             if (talalat == true)
             {
                 Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]} ({eletkor} éves)\n");
@@ -357,7 +357,7 @@ namespace Vernyomasnaplo
             Console.Write("Adja meg a pulzusát: ");
             int pulzus = int.Parse(Console.ReadLine());
 
-            var modositas = $"{szisztoles};{diasztoles};{pulzus};{adatok[index].Split('(')[1].Split('|')[törles-1].Split(';')[3]}";
+            var modositas = $"{szisztoles};{diasztoles};{pulzus};{adatok[index].Split('(')[1].Split('|')[törles - 1].Split(';')[3]}";
 
             var start = adatok[index].IndexOf(adatok[index].Split('(')[1].Split('|')[törles - 1]);
             var vege = adatok[index].Split('(')[1].Split('|')[törles - 1].Length;
@@ -385,8 +385,8 @@ namespace Vernyomasnaplo
             Console.WriteLine("║  Adatok megjelenítése  ║");
             Console.WriteLine("║                        ║");
             Console.WriteLine("╚════════════════════════╝");
-        
-        DateTime most = DateTime.Now;
+
+            DateTime most = DateTime.Now;
             int eletkor = most.Year - szul_datum.Year;
             bool talalat = false;
             int index = 0;
@@ -410,7 +410,7 @@ namespace Vernyomasnaplo
                     for (int i = 0; i < darab; i++)
                     {
                         Console.Write($"A(z) {i + 1}. mérés eredménye:\nDátum: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]}\nAdatok: szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]}, diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}, pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n" +
-                            $"Diagnózis: {Vernyomas(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]),int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]))}  {pulzusfigyelo(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]))}\n\n");
+                            $"Diagnózis: {Vernyomas(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]), int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]))}  {pulzusfigyelo(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]))}\n\n");
                     }
                 }
             }
@@ -439,13 +439,13 @@ namespace Vernyomasnaplo
             Console.WriteLine("║     Adatok törlése     ║");
             Console.WriteLine("║                        ║");
             Console.WriteLine("╚════════════════════════╝");
-        
-        Console.ReadLine();
+
+            Console.ReadLine();
         }
 
         static string pulzusfigyelo(int pulzus)
         {
-           
+
             DateTime most = DateTime.Now;
             int eletkor = most.Year - szul_datum.Year;
 
@@ -524,7 +524,7 @@ namespace Vernyomasnaplo
                             else
                                 alaphatter = szin;
                         }
-                   
+
                         break;
 
                     case ConsoleKey.DownArrow:
@@ -564,7 +564,7 @@ namespace Vernyomasnaplo
             int jo_index = 0;
             for (int i = 0; i < szinek.Length; i++)
             {
-                if (i == alapszin || i==alaphatter)
+                if (i == alapszin || i == alaphatter)
                     continue; // ezt a színt kihagyjuk
 
                 szinek_kicsi[jo_index] = szinek[i];
@@ -634,7 +634,7 @@ namespace Vernyomasnaplo
                 }
             }
 
-            int vissza= Array.IndexOf(szinek, szinek_kicsi[akt_szin_szama]);
+            int vissza = Array.IndexOf(szinek, szinek_kicsi[akt_szin_szama]);
             return vissza;
 
         }
