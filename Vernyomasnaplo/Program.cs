@@ -493,34 +493,47 @@ namespace Vernyomasnaplo
                     if (adatok[index].Split('(')[1] != "")
                     {
                         int darab = adatok[index].Split('(')[1].Split('|').Count();
-                        if (darab>0) {
+                        if (darab > 0)
+                        {
+                            // Legnagyobbak
                             int leg_szisz = int.Parse(adatok[index].Split('(')[1].Split('|')[0].Split(';')[0]);
                             int leg_diasz = int.Parse(adatok[index].Split('(')[1].Split('|')[0].Split(';')[1]);
                             int leg_pul = int.Parse(adatok[index].Split('(')[1].Split('|')[0].Split(';')[2]);
+
+                            // Legkisebbek
+                            int legk_szisz = leg_szisz;
+                            int legk_diasz = leg_diasz;
+                            int legk_pul = leg_pul;
+
                             for (int i = 0; i < darab; i++)
                             {
-                                if (leg_szisz < int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]))
-                                {
-                                    leg_szisz = int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]);
-                                }
+                                int curr_szisz = int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]);
+                                int curr_diasz = int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]);
+                                int curr_pul = int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]);
 
-                                if (leg_diasz < int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]))
-                                {
-                                    leg_diasz = int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]);
-                                }
+                                // Legnagyobbak
+                                if (leg_szisz < curr_szisz) leg_szisz = curr_szisz;
+                                if (leg_diasz < curr_diasz) leg_diasz = curr_diasz;
+                                if (leg_pul < curr_pul) leg_pul = curr_pul;
 
-                                if (leg_pul < int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]))
-                                {
-                                    leg_pul = int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]);
-                                }
-                                Console.Write($"A(z) {i + 1}. mérés eredménye:\nDátum: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]}\nAdatok: szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]}, diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}, pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n" +
-                                    $"Diagnózis: {Vernyomas(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]), int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]))}  {pulzusfigyelo(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]))}\n\n");
+                                // Legkisebbek
+                                if (legk_szisz > curr_szisz) legk_szisz = curr_szisz;
+                                if (legk_diasz > curr_diasz) legk_diasz = curr_diasz;
+                                if (legk_pul > curr_pul) legk_pul = curr_pul;
+
+                                Console.Write($"A(z) {i + 1}. mérés eredménye:\nDátum: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]}\nAdatok: szisztolés: {curr_szisz}, diasztolés: {curr_diasz}, pulzus: {curr_pul}\n" +
+                                    $"Diagnózis: {Vernyomas(curr_szisz, curr_diasz)}  {pulzusfigyelo(curr_pul)}\n\n");
                             }
+
                             Console.WriteLine();
                             Console.WriteLine($"Legnagyobb szisztolés: {leg_szisz}");
                             Console.WriteLine($"Legnagyobb diasztolés: {leg_diasz}");
                             Console.WriteLine($"Legnagyobb pulzus: {leg_pul}");
+                            Console.WriteLine($"Legkisebb szisztolés: {legk_szisz}");
+                            Console.WriteLine($"Legkisebb diasztolés: {legk_diasz}");
+                            Console.WriteLine($"Legkisebb pulzus: {legk_pul}");
                         }
+
 
                     }
                 }
