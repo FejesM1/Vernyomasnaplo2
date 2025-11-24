@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -166,6 +165,7 @@ namespace Vernyomasnaplo
 
                     Console.WriteLine(e);
                 }
+                return false;
             }
 
         }
@@ -534,12 +534,14 @@ namespace Vernyomasnaplo
 
                     Console.WriteLine(e);
                 }
+                return "hiba a Vernyomásnál";
             }
         }
 
         static void Torol()
         {
-            try {
+            try
+            {
                 Console.BackgroundColor = szinek[alaphatter];
                 Console.ForegroundColor = szinek[alapszin];
                 Console.Clear();
@@ -604,7 +606,7 @@ namespace Vernyomasnaplo
 
                     string[] sorok = File.ReadAllLines("Adatok.txt");
                     sorok[index] = modositott;
-             
+
                     File.WriteAllLines("Adatok.txt", sorok);
                     adatok[index] = modositott;
 
@@ -623,12 +625,12 @@ namespace Vernyomasnaplo
                 if (Console.ReadLine() == "igen")
                 {
 
-                Console.WriteLine(e);
+                    Console.WriteLine(e);
                 }
             }
-            }
-            
-        
+        }
+
+
 
         static string pulzusfigyelo(int pulzus)
         {
@@ -679,6 +681,7 @@ namespace Vernyomasnaplo
 
                     Console.WriteLine(e);
                 }
+                return "hiba a pulzus figyeloben";
             }
         }
 
@@ -857,6 +860,7 @@ namespace Vernyomasnaplo
 
                     Console.WriteLine(e);
                 }
+                return 0;
             }
         }
 
