@@ -493,13 +493,45 @@ namespace Vernyomasnaplo
                     if (adatok[index].Split('(')[1] != "")
                     {
                         int darab = adatok[index].Split('(')[1].Split('|').Count();
-                        for (int i = 0; i < darab; i++)
-                        {
-                            Console.Write($"A(z) {i + 1}. mérés eredménye:\nDátum: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]}\nAdatok: szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]}, diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}, pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n" +
-                                $"Diagnózis: {Vernyomas(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]), int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]))}  {pulzusfigyelo(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]))}\n\n");
+                        if (darab>0) {
+                            int leg_szisz = int.Parse(adatok[index].Split('(')[1].Split('|')[0].Split(';')[0]);
+                            int leg_diasz = int.Parse(adatok[index].Split('(')[1].Split('|')[0].Split(';')[1]);
+                            int leg_pul = int.Parse(adatok[index].Split('(')[1].Split('|')[0].Split(';')[2]);
+                            for (int i = 0; i < darab; i++)
+                            {
+                                if (leg_szisz < int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]))
+                                {
+                                    leg_szisz = int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]);
+                                }
+
+                                if (leg_diasz < int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]))
+                                {
+                                    leg_diasz = int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]);
+                                }
+
+                                if (leg_pul < int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]))
+                                {
+                                    leg_pul = int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]);
+                                }
+                                Console.Write($"A(z) {i + 1}. mérés eredménye:\nDátum: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]}\nAdatok: szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]}, diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}, pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n" +
+                                    $"Diagnózis: {Vernyomas(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]), int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]))}  {pulzusfigyelo(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]))}\n\n");
+                            }
+                            Console.WriteLine();
+                            Console.WriteLine($"Legnagyobb szisztolés: {leg_szisz}");
+                            Console.WriteLine($"Legnagyobb diasztolés: {leg_diasz}");
+                            Console.WriteLine($"Legnagyobb pulzus: {leg_pul}");
                         }
+
                     }
                 }
+
+                
+
+
+
+
+
+
 
                 Console.WriteLine("\nNyomjon Entert a visszatéréshez.");
                 Console.ReadLine();
