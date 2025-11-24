@@ -47,387 +47,494 @@ namespace Vernyomasnaplo
         static List<string> adatok = new List<string>();
 
         static void Main(string[] args)
+
+
+
         {
-            // 🔹 Fájlok létrehozása, ha nem léteznek
-            if (!File.Exists(adatokFile)) File.Create(adatokFile).Close();
-            if (!File.Exists(felhasznalokFile)) File.Create(felhasznalokFile).Close();
 
-            // 🔹 Adatok beolvasása
-            adatok.Clear();
-            foreach (var sor in File.ReadAllLines(adatokFile))
+            try
             {
-                if (!string.IsNullOrWhiteSpace(sor))
-                    adatok.Add(sor);
-            }
-            Console.BackgroundColor = szinek[alaphatter];
-            while (fut)
-            {
-                Console.ForegroundColor = ConsoleColor.White;
+
+
+                // 🔹 Fájlok létrehozása, ha nem léteznek
+                if (!File.Exists(adatokFile)) File.Create(adatokFile).Close();
+                if (!File.Exists(felhasznalokFile)) File.Create(felhasznalokFile).Close();
+
+                // 🔹 Adatok beolvasása
+                adatok.Clear();
+                foreach (var sor in File.ReadAllLines(adatokFile))
+                {
+                    if (!string.IsNullOrWhiteSpace(sor))
+                        adatok.Add(sor);
+                }
                 Console.BackgroundColor = szinek[alaphatter];
-
-                Console.Clear();
-
-                int startIndex = bejelentkezve ? 2 : 0;
-                int endIndex = bejelentkezve ? menupontok.Length : 2;
-
-
-                for (int i = startIndex; i < endIndex; i++)
+                while (fut)
                 {
-                    if (aktualis_menu_pont == i)
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = szinek[alaphatter];
+
+                    Console.Clear();
+
+                    int startIndex = bejelentkezve ? 2 : 0;
+                    int endIndex = bejelentkezve ? menupontok.Length : 2;
+
+
+                    for (int i = startIndex; i < endIndex; i++)
                     {
-                        Console.ForegroundColor = szinek[alapszin];
-                        Console.WriteLine(menupontok[i]);
-                        Console.ForegroundColor = ConsoleColor.White;
-                    }
-                    else
-                    {
-                        Console.WriteLine(menupontok[i]);
-                    }
-                }
-
-
-                var key = Console.ReadKey(true).Key;
-                switch (key)
-                {
-                    case ConsoleKey.Enter:
-
-                        if (aktualis_menu_pont >= startIndex && aktualis_menu_pont < endIndex)
-                            fuggvenyek[aktualis_menu_pont]();
-
-
-                        if (bejelentkezve && aktualis_menu_pont < 2)
-                            aktualis_menu_pont = 2;
-                        break;
-
-                    case ConsoleKey.UpArrow:
-                        if (aktualis_menu_pont > startIndex)
-                            aktualis_menu_pont--;
+                        if (aktualis_menu_pont == i)
+                        {
+                            Console.ForegroundColor = szinek[alapszin];
+                            Console.WriteLine(menupontok[i]);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
                         else
                         {
-                            aktualis_menu_pont = endIndex - 1;
+                            Console.WriteLine(menupontok[i]);
                         }
-                        break;
+                    }
 
-                    case ConsoleKey.DownArrow:
-                        if (aktualis_menu_pont < endIndex - 1)
-                            aktualis_menu_pont++;
-                        else
-                        {
-                            aktualis_menu_pont = 0;
-                        }
-                        break;
 
-                    default:
-                        Console.Beep();
-                        break;
+                    var key = Console.ReadKey(true).Key;
+                    switch (key)
+                    {
+                        case ConsoleKey.Enter:
+
+                            if (aktualis_menu_pont >= startIndex && aktualis_menu_pont < endIndex)
+                                fuggvenyek[aktualis_menu_pont]();
+
+
+                            if (bejelentkezve && aktualis_menu_pont < 2)
+                                aktualis_menu_pont = 2;
+                            break;
+
+                        case ConsoleKey.UpArrow:
+                            if (aktualis_menu_pont > startIndex)
+                                aktualis_menu_pont--;
+                            else
+                            {
+                                aktualis_menu_pont = endIndex - 1;
+                            }
+                            break;
+
+                        case ConsoleKey.DownArrow:
+                            if (aktualis_menu_pont < endIndex - 1)
+                                aktualis_menu_pont++;
+                            else
+                            {
+                                aktualis_menu_pont = 0;
+                            }
+                            break;
+
+                        default:
+                            Console.Beep();
+                            break;
+                    }
+
+
                 }
 
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Hiba történt szeretné látni a hibát?");
+                if (Console.ReadLine() == "igen")
+                {
 
+                    Console.WriteLine(e);
+                }
             }
         }
 
         // 🔸 Felhasználó létezés ellenőrzés
         static bool FelhasznaloLetezik(string nev)
         {
-            foreach (var sor in File.ReadAllLines(felhasznalokFile))
+            try
             {
-                var adatok = sor.Split(';');
-                if (adatok.Length > 0 && adatok[0] == nev)
-                    return true;
+                foreach (var sor in File.ReadAllLines(felhasznalokFile))
+                {
+                    var adatok = sor.Split(';');
+                    if (adatok.Length > 0 && adatok[0] == nev)
+                        return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception e)
+            {
+                Console.WriteLine("Hiba történt szeretné látni a hibát?");
+                if (Console.ReadLine() == "igen")
+                {
+
+                    Console.WriteLine(e);
+                }
+            }
+
         }
 
         static void Regisztral()
         {
-            Console.BackgroundColor = szinek[alaphatter];
-            Console.ForegroundColor = szinek[alapszin];
-            Console.Clear();
-            Console.WriteLine("╔════════════════════════╗");
-            Console.WriteLine("║                        ║");
-            Console.WriteLine("║      Regisztrálás      ║");
-            Console.WriteLine("║                        ║");
-            Console.WriteLine("╚════════════════════════╝");
 
-            Console.WriteLine("Regisztrálás:\n");
-            Console.Write("Felhasználónév: ");
-            string nev = Console.ReadLine()?.Trim();
-            if (string.IsNullOrEmpty(nev))
+            try
             {
-                Console.WriteLine("A felhasználónév nem lehet üres!");
-                Console.ReadLine();
-                return;
-            }
+                Console.BackgroundColor = szinek[alaphatter];
+                Console.ForegroundColor = szinek[alapszin];
+                Console.Clear();
+                Console.WriteLine("╔════════════════════════╗");
+                Console.WriteLine("║                        ║");
+                Console.WriteLine("║      Regisztrálás      ║");
+                Console.WriteLine("║                        ║");
+                Console.WriteLine("╚════════════════════════╝");
 
-            if (FelhasznaloLetezik(nev))
+                Console.WriteLine("Regisztrálás:\n");
+                Console.Write("Felhasználónév: ");
+                string nev = Console.ReadLine()?.Trim();
+                if (string.IsNullOrEmpty(nev))
+                {
+                    Console.WriteLine("A felhasználónév nem lehet üres!");
+                    Console.ReadLine();
+                    return;
+                }
+
+                if (FelhasznaloLetezik(nev))
+                {
+                    Console.WriteLine("Ez a felhasználónév már létezik!");
+                    Console.ReadLine();
+                    return;
+                }
+                Console.Write("Születési dátum: ");
+                szul_datum = DateTime.Parse(Console.ReadLine());
+
+
+                Console.Write("Jelszó: ");
+                string jelszo = Console.ReadLine()?.Trim();
+                if (string.IsNullOrEmpty(jelszo))
+                {
+                    Console.WriteLine("A jelszó nem lehet üres!");
+                    Console.ReadLine();
+                    return;
+                }
+                File.AppendAllText(felhasznalokFile, $"{nev};{jelszo};{szul_datum}{Environment.NewLine}");
+                File.AppendAllText(adatokFile, $"{nev}({Environment.NewLine}");
+                adatok.Add($"{nev}(");
+                Console.WriteLine("Sikeres regisztráció!");
+                Console.ReadLine();
+            }
+            catch (Exception e)
             {
-                Console.WriteLine("Ez a felhasználónév már létezik!");
-                Console.ReadLine();
-                return;
-            }
-            Console.Write("Születési dátum: ");
-            szul_datum = DateTime.Parse(Console.ReadLine());
+                Console.WriteLine("Hiba történt szeretné látni a hibát?");
+                if (Console.ReadLine() == "igen")
+                {
 
-
-            Console.Write("Jelszó: ");
-            string jelszo = Console.ReadLine()?.Trim();
-            if (string.IsNullOrEmpty(jelszo))
-            {
-                Console.WriteLine("A jelszó nem lehet üres!");
-                Console.ReadLine();
-                return;
+                    Console.WriteLine(e);
+                }
             }
-            File.AppendAllText(felhasznalokFile, $"{nev};{jelszo};{szul_datum}{Environment.NewLine}");
-            File.AppendAllText(adatokFile, $"{nev}({Environment.NewLine}");
-            adatok.Add($"{nev}(");
-            Console.WriteLine("Sikeres regisztráció!");
-            Console.ReadLine();
         }
 
         static void Bejelentkezes()
         {
-            Console.BackgroundColor = szinek[alaphatter];
-            Console.ForegroundColor = szinek[alapszin];
-            Console.Clear();
-            Console.WriteLine("╔════════════════════════╗");
-            Console.WriteLine("║                        ║");
-            Console.WriteLine("║      Bejelentkezés     ║");
-            Console.WriteLine("║                        ║");
-            Console.WriteLine("╚════════════════════════╝");
-
-            Console.WriteLine("Bejelentkezés:\n");
-
-            Console.Write("Felhasználónév: ");
-            string nev = Console.ReadLine()?.Trim();
-
-            if (string.IsNullOrEmpty(nev))
+            try
             {
-                Console.WriteLine("A felhasználónév nem lehet üres!");
-                Console.ReadLine();
-                return;
-            }
+                Console.BackgroundColor = szinek[alaphatter];
+                Console.ForegroundColor = szinek[alapszin];
+                Console.Clear();
+                Console.WriteLine("╔════════════════════════╗");
+                Console.WriteLine("║                        ║");
+                Console.WriteLine("║      Bejelentkezés     ║");
+                Console.WriteLine("║                        ║");
+                Console.WriteLine("╚════════════════════════╝");
 
-            Console.Write("Jelszó: ");
-            string jelszo = Console.ReadLine()?.Trim();
+                Console.WriteLine("Bejelentkezés:\n");
 
-            if (string.IsNullOrEmpty(jelszo))
-            {
-                Console.WriteLine("A jelszó nem lehet üres!");
-                Console.ReadLine();
-                return;
-            }
+                Console.Write("Felhasználónév: ");
+                string nev = Console.ReadLine()?.Trim();
 
-            bool sikeres = false;
-            foreach (var sor in File.ReadAllLines(felhasznalokFile))
-            {
-                var adatok = sor.Split(';');
-                if (adatok.Length >= 2 && adatok[0] == nev && adatok[1] == jelszo)
+                if (string.IsNullOrEmpty(nev))
                 {
-                    szul_datum = Convert.ToDateTime(adatok[2]);
-                    sikeres = true;
-                    break;
+                    Console.WriteLine("A felhasználónév nem lehet üres!");
+                    Console.ReadLine();
+                    return;
+                }
+
+                Console.Write("Jelszó: ");
+                string jelszo = Console.ReadLine()?.Trim();
+
+                if (string.IsNullOrEmpty(jelszo))
+                {
+                    Console.WriteLine("A jelszó nem lehet üres!");
+                    Console.ReadLine();
+                    return;
+                }
+
+                bool sikeres = false;
+                foreach (var sor in File.ReadAllLines(felhasznalokFile))
+                {
+                    var adatok = sor.Split(';');
+                    if (adatok.Length >= 2 && adatok[0] == nev && adatok[1] == jelszo)
+                    {
+                        szul_datum = Convert.ToDateTime(adatok[2]);
+                        sikeres = true;
+                        break;
+                    }
+                }
+
+                if (sikeres)
+                {
+                    bejelentkezve = true;
+                    bejelentkezettFelhasznalo = nev;
+                    Console.WriteLine("Sikeres bejelentkezés!");
+                }
+                else
+                {
+                    Console.WriteLine("Hibás felhasználónév vagy jelszó!");
+                }
+                Console.ReadLine();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Hiba történt szeretné látni a hibát?");
+                if (Console.ReadLine() == "igen")
+                {
+
+                    Console.WriteLine(e);
                 }
             }
-
-            if (sikeres)
-            {
-                bejelentkezve = true;
-                bejelentkezettFelhasznalo = nev;
-                Console.WriteLine("Sikeres bejelentkezés!");
-            }
-            else
-            {
-                Console.WriteLine("Hibás felhasználónév vagy jelszó!");
-            }
-            Console.ReadLine();
         }
 
         static void AdatokHozzaadasa()
         {
-            Console.BackgroundColor = szinek[alaphatter];
-            Console.ForegroundColor = szinek[alapszin];
-            Console.Clear();
-            Console.WriteLine("╔════════════════════════╗");
-            Console.WriteLine("║                        ║");
-            Console.WriteLine("║   Adatok hozzáadása    ║");
-            Console.WriteLine("║                        ║");
-            Console.WriteLine("╚════════════════════════╝");
-
-            bool talalat = false;
-            string nev = "";
-            int index = 0;
-            DateTime most = DateTime.Now;
-
-            for (int i = 0; i < adatok.Count; i++)
+            try
             {
-                if (adatok[i].Split('(')[0] == bejelentkezettFelhasznalo)
+                Console.BackgroundColor = szinek[alaphatter];
+                Console.ForegroundColor = szinek[alapszin];
+                Console.Clear();
+                Console.WriteLine("╔════════════════════════╗");
+                Console.WriteLine("║                        ║");
+                Console.WriteLine("║   Adatok hozzáadása    ║");
+                Console.WriteLine("║                        ║");
+                Console.WriteLine("╚════════════════════════╝");
+
+                bool talalat = false;
+                string nev = "";
+                int index = 0;
+                DateTime most = DateTime.Now;
+
+                for (int i = 0; i < adatok.Count; i++)
                 {
-                    nev = adatok[i].Split('(')[0];
-                    talalat = true;
-                    index = i;
-                    break;
+                    if (adatok[i].Split('(')[0] == bejelentkezettFelhasznalo)
+                    {
+                        nev = adatok[i].Split('(')[0];
+                        talalat = true;
+                        index = i;
+                        break;
+                    }
                 }
-            }
-            if (talalat == true)
-            {
-                Console.Write("Adja meg a szisztolést: ");
-                int szisztoles = int.Parse(Console.ReadLine());
-
-                Console.Write("Adja meg a diasztolést: ");
-                int diasztoles = int.Parse(Console.ReadLine());
-
-
-                Console.Write("Adja meg a pulzusát: ");
-                int pulzus = int.Parse(Console.ReadLine());
-
-
-                string keszadat = $"{szisztoles};{diasztoles};{pulzus};{most}";
-
-                if (adatok[index].Split('(')[1] != "")
+                if (talalat == true)
                 {
-                    adatok[index] += "|";
-                    adatok[index] += keszadat;
+                    Console.Write("Adja meg a szisztolést: ");
+                    int szisztoles = int.Parse(Console.ReadLine());
+
+                    Console.Write("Adja meg a diasztolést: ");
+                    int diasztoles = int.Parse(Console.ReadLine());
+
+
+                    Console.Write("Adja meg a pulzusát: ");
+                    int pulzus = int.Parse(Console.ReadLine());
+
+
+                    string keszadat = $"{szisztoles};{diasztoles};{pulzus};{most}";
+
+                    if (adatok[index].Split('(')[1] != "")
+                    {
+                        adatok[index] += "|";
+                        adatok[index] += keszadat;
+                    }
+                    else
+                    {
+                        adatok[index] += keszadat;
+                    }
                 }
                 else
                 {
-                    adatok[index] += keszadat;
+                    Console.WriteLine("Az Adatok.txt be nem került bele a felhasználó neved!");
+                    Console.ReadLine();
                 }
-            }
-            else
-            {
-                Console.WriteLine("Az Adatok.txt be nem került bele a felhasználó neved!");
+                File.WriteAllText(adatokFile, "");
+                for (int i = 0; i < adatok.Count; i++)
+                {
+                    File.AppendAllText(adatokFile, adatok[i] + Environment.NewLine);
+                }
+                Console.WriteLine("Adat hozzáadva.");
                 Console.ReadLine();
             }
-            File.WriteAllText(adatokFile, "");
-            for (int i = 0; i < adatok.Count; i++)
+            catch (Exception e)
             {
-                File.AppendAllText(adatokFile, adatok[i] + Environment.NewLine);
+                Console.WriteLine("Hiba történt szeretné látni a hibát?");
+                if (Console.ReadLine() == "igen")
+                {
+
+                    Console.WriteLine(e);
+                }
             }
-            Console.WriteLine("Adat hozzáadva.");
-            Console.ReadLine();
+
         }
 
         static void Modosit()
         {
-            Console.BackgroundColor = szinek[alaphatter];
-            Console.ForegroundColor = szinek[alapszin];
-            Console.Clear();
-            Console.WriteLine("╔════════════════════════╗");
-            Console.WriteLine("║                        ║");
-            Console.WriteLine("║   Adatok módosítása    ║");
-            Console.WriteLine("║                        ║");
-            Console.WriteLine("╚════════════════════════╝");
-
-            bool talalat = false;
-            int index = 0;
-            for (int i = 0; i < adatok.Count; i++)
+            try
             {
-                if (adatok[i].Split('(')[0] == bejelentkezettFelhasznalo)
+                Console.BackgroundColor = szinek[alaphatter];
+                Console.ForegroundColor = szinek[alapszin];
+                Console.Clear();
+                Console.WriteLine("╔════════════════════════╗");
+                Console.WriteLine("║                        ║");
+                Console.WriteLine("║   Adatok módosítása    ║");
+                Console.WriteLine("║                        ║");
+                Console.WriteLine("╚════════════════════════╝");
+
+                bool talalat = false;
+                int index = 0;
+                for (int i = 0; i < adatok.Count; i++)
                 {
-                    talalat = true;
-                    index = i;
-                    break;
-                }
-            }
-
-            Console.WriteLine("Adatok megjelenítése:\n");
-
-            int darab = adatok[index].Split('(')[1].Split('|').Count();
-            int törles;
-            DateTime most = DateTime.Now;
-            int eletkor = most.Year - szul_datum.Year;
-
-            if (talalat == true)
-            {
-                Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]} ({eletkor} éves)\n");
-                if (adatok[index].Split('(')[1] != "")
-                {
-                    for (int i = 0; i < darab; i++)
+                    if (adatok[i].Split('(')[0] == bejelentkezettFelhasznalo)
                     {
-                        Console.Write($"A(z) {i + 1}. mérés eredménye {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]} szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]} diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]} pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n");
+                        talalat = true;
+                        index = i;
+                        break;
                     }
                 }
+
+                Console.WriteLine("Adatok megjelenítése:\n");
+
+                int darab = adatok[index].Split('(')[1].Split('|').Count();
+                int törles;
+                DateTime most = DateTime.Now;
+                int eletkor = most.Year - szul_datum.Year;
+
+                if (talalat == true)
+                {
+                    Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]} ({eletkor} éves)\n");
+                    if (adatok[index].Split('(')[1] != "")
+                    {
+                        for (int i = 0; i < darab; i++)
+                        {
+                            Console.Write($"A(z) {i + 1}. mérés eredménye {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]} szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]} diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]} pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n");
+                        }
+                    }
+                }
+
+                Console.Write("\nAdja meg a módosítandó mérés sorszámát: ");
+                törles = int.Parse(Console.ReadLine());
+                Console.Write("Adja meg a szisztolést: ");
+                int szisztoles = int.Parse(Console.ReadLine());
+                Console.Write("Adja meg a diasztolést: ");
+                int diasztoles = int.Parse(Console.ReadLine());
+                Console.Write("Adja meg a pulzusát: ");
+                int pulzus = int.Parse(Console.ReadLine());
+
+                var modositas = $"{szisztoles};{diasztoles};{pulzus};{adatok[index].Split('(')[1].Split('|')[törles - 1].Split(';')[3]}";
+
+                var start = adatok[index].IndexOf(adatok[index].Split('(')[1].Split('|')[törles - 1]);
+                var vege = adatok[index].Split('(')[1].Split('|')[törles - 1].Length;
+
+                adatok[index] = adatok[index].Remove(start, vege);
+
+                adatok[index] = adatok[index].Insert(start, modositas);
+
+                File.WriteAllText(adatokFile, "");
+                for (int i = 0; i < adatok.Count; i++)
+                {
+                    File.AppendAllText(adatokFile, adatok[i] + Environment.NewLine);
+                }
+                Console.WriteLine("Adat módosítva.");
+                Console.ReadLine();
             }
-
-            Console.Write("\nAdja meg a módosítandó mérés sorszámát: ");
-            törles = int.Parse(Console.ReadLine());
-            Console.Write("Adja meg a szisztolést: ");
-            int szisztoles = int.Parse(Console.ReadLine());
-            Console.Write("Adja meg a diasztolést: ");
-            int diasztoles = int.Parse(Console.ReadLine());
-            Console.Write("Adja meg a pulzusát: ");
-            int pulzus = int.Parse(Console.ReadLine());
-
-            var modositas = $"{szisztoles};{diasztoles};{pulzus};{adatok[index].Split('(')[1].Split('|')[törles - 1].Split(';')[3]}";
-
-            var start = adatok[index].IndexOf(adatok[index].Split('(')[1].Split('|')[törles - 1]);
-            var vege = adatok[index].Split('(')[1].Split('|')[törles - 1].Length;
-
-            adatok[index] = adatok[index].Remove(start, vege);
-
-            adatok[index] = adatok[index].Insert(start, modositas);
-
-            File.WriteAllText(adatokFile, "");
-            for (int i = 0; i < adatok.Count; i++)
+            catch (Exception e)
             {
-                File.AppendAllText(adatokFile, adatok[i] + Environment.NewLine);
+                Console.WriteLine("Hiba történt szeretné látni a hibát?");
+                if (Console.ReadLine() == "igen")
+                {
+
+                    Console.WriteLine(e);
+                }
             }
-            Console.WriteLine("Adat módosítva.");
-            Console.ReadLine();
         }
 
         static void Megjelenit()
         {
-            Console.BackgroundColor = szinek[alaphatter];
-            Console.ForegroundColor = szinek[alapszin];
-            Console.Clear();
-            Console.WriteLine("╔════════════════════════╗");
-            Console.WriteLine("║                        ║");
-            Console.WriteLine("║  Adatok megjelenítése  ║");
-            Console.WriteLine("║                        ║");
-            Console.WriteLine("╚════════════════════════╝");
-
-            DateTime most = DateTime.Now;
-            int eletkor = most.Year - szul_datum.Year;
-            bool talalat = false;
-            int index = 0;
-            for (int i = 0; i < adatok.Count; i++)
+            try
             {
-                if (adatok[i].Split('(')[0] == bejelentkezettFelhasznalo)
-                {
-                    talalat = true;
-                    index = i;
-                    break;
-                }
-            }
-            Console.WriteLine("Adatok megjelenítése:\n");
+                Console.BackgroundColor = szinek[alaphatter];
+                Console.ForegroundColor = szinek[alapszin];
+                Console.Clear();
+                Console.WriteLine("╔════════════════════════╗");
+                Console.WriteLine("║                        ║");
+                Console.WriteLine("║  Adatok megjelenítése  ║");
+                Console.WriteLine("║                        ║");
+                Console.WriteLine("╚════════════════════════╝");
 
-            if (talalat == true)
-            {
-                Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]} ({eletkor} éves)\n");
-                if (adatok[index].Split('(')[1] != "")
+                DateTime most = DateTime.Now;
+                int eletkor = most.Year - szul_datum.Year;
+                bool talalat = false;
+                int index = 0;
+                for (int i = 0; i < adatok.Count; i++)
                 {
-                    int darab = adatok[index].Split('(')[1].Split('|').Count();
-                    for (int i = 0; i < darab; i++)
+                    if (adatok[i].Split('(')[0] == bejelentkezettFelhasznalo)
                     {
-                        Console.Write($"A(z) {i + 1}. mérés eredménye:\nDátum: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]}\nAdatok: szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]}, diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}, pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n" +
-                            $"Diagnózis: {Vernyomas(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]), int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]))}  {pulzusfigyelo(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]))}\n\n");
+                        talalat = true;
+                        index = i;
+                        break;
                     }
                 }
-            }
+                Console.WriteLine("Adatok megjelenítése:\n");
 
-            Console.WriteLine("\nNyomjon Entert a visszatéréshez.");
-            Console.ReadLine();
+                if (talalat == true)
+                {
+                    Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]} ({eletkor} éves)\n");
+                    if (adatok[index].Split('(')[1] != "")
+                    {
+                        int darab = adatok[index].Split('(')[1].Split('|').Count();
+                        for (int i = 0; i < darab; i++)
+                        {
+                            Console.Write($"A(z) {i + 1}. mérés eredménye:\nDátum: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]}\nAdatok: szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]}, diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}, pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n" +
+                                $"Diagnózis: {Vernyomas(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]), int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]))}  {pulzusfigyelo(int.Parse(adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]))}\n\n");
+                        }
+                    }
+                }
+
+                Console.WriteLine("\nNyomjon Entert a visszatéréshez.");
+                Console.ReadLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Hiba történt szeretné látni a hibát?");
+                if (Console.ReadLine() == "igen")
+                {
+
+                    Console.WriteLine(e);
+                }
+            }
         }
 
         static string Vernyomas(int szisztoles, int diasztoles)
         {
-            if (szisztoles <= 90 && diasztoles <= 60) { return "Figyelem: a vérnyomás értéke alacsony."; }
-            else if (szisztoles <= 120 && diasztoles <= 80) { return "A vérnyomása normális."; }
-            else if (szisztoles <= 140 && diasztoles <= 90) { return "Figyelem: a vérnyomása emelkedett."; }
-            else if (szisztoles <= 160 && diasztoles <= 100) { return "Figyelem: a vérnyomás értéke magas! Ez 1. fokú hipertónia."; }
-            else if (szisztoles <= 180 && diasztoles <= 110) { return "Figyelem: a vérnyomás értéke magas! Ez 2. fokú hipertónia."; }
-            else { return "Figyelem: a vérnyomás értéke magas! Ez 3. fokú hipertónia."; }
+            try
+            {
+                if (szisztoles <= 90 && diasztoles <= 60) { return "Figyelem: a vérnyomás értéke alacsony."; }
+                else if (szisztoles <= 120 && diasztoles <= 80) { return "A vérnyomása normális."; }
+                else if (szisztoles <= 140 && diasztoles <= 90) { return "Figyelem: a vérnyomása emelkedett."; }
+                else if (szisztoles <= 160 && diasztoles <= 100) { return "Figyelem: a vérnyomás értéke magas! Ez 1. fokú hipertónia."; }
+                else if (szisztoles <= 180 && diasztoles <= 110) { return "Figyelem: a vérnyomás értéke magas! Ez 2. fokú hipertónia."; }
+                else { return "Figyelem: a vérnyomás értéke magas! Ez 3. fokú hipertónia."; }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Hiba történt szeretné látni a hibát?");
+                if (Console.ReadLine() == "igen")
+                {
+
+                    Console.WriteLine(e);
+                }
+            }
         }
 
         static void Torol()
@@ -525,198 +632,232 @@ namespace Vernyomasnaplo
 
         static string pulzusfigyelo(int pulzus)
         {
+            try
+            {
 
-            DateTime most = DateTime.Now;
-            int eletkor = most.Year - szul_datum.Year;
+                DateTime most = DateTime.Now;
+                int eletkor = most.Year - szul_datum.Year;
 
-            if (eletkor >= 0 && eletkor <= 1) // Csecsemő
-            {
-                if (pulzus < 120) return "Alacsony a pulzusod.";
-                else if (pulzus > 160) return "Magas a pulzusod.";
-            }
-            else if (eletkor > 1 && eletkor <= 2) // Kisgyermek
-            {
-                if (pulzus < 110) return "Alacsony a pulzusod.";
-                else if (pulzus > 150) return "Magas a pulzusod.";
-            }
-            else if (eletkor > 2 && eletkor <= 5) // Óvodás
-            {
-                if (pulzus < 80) return "Alacsony a pulzusod.";
-                else if (pulzus > 120) return "Magas a pulzusod.";
-            }
-            else if (eletkor > 5 && eletkor <= 12) // Iskolás
-            {
-                if (pulzus < 70) return "Alacsony a pulzusod.";
-                else if (pulzus > 110) return "Magas a pulzusod.";
-            }
-            else if (eletkor > 12 && eletkor <= 18) // Serdülő
-            {
-                if (pulzus < 60) return "Alacsony a pulzusod.";
-                else if (pulzus > 100) return "Magas a pulzusod.";
-            }
-            else if (eletkor >= 19) // Felnőttek (19 év felett)
-            {
-                if (pulzus < 60) return "Alacsony a pulzusod.";
-                else if (pulzus > 100) return "Magas a pulzusod.";
-            }
+                if (eletkor >= 0 && eletkor <= 1) // Csecsemő
+                {
+                    if (pulzus < 120) return "Alacsony a pulzusod.";
+                    else if (pulzus > 160) return "Magas a pulzusod.";
+                }
+                else if (eletkor > 1 && eletkor <= 2) // Kisgyermek
+                {
+                    if (pulzus < 110) return "Alacsony a pulzusod.";
+                    else if (pulzus > 150) return "Magas a pulzusod.";
+                }
+                else if (eletkor > 2 && eletkor <= 5) // Óvodás
+                {
+                    if (pulzus < 80) return "Alacsony a pulzusod.";
+                    else if (pulzus > 120) return "Magas a pulzusod.";
+                }
+                else if (eletkor > 5 && eletkor <= 12) // Iskolás
+                {
+                    if (pulzus < 70) return "Alacsony a pulzusod.";
+                    else if (pulzus > 110) return "Magas a pulzusod.";
+                }
+                else if (eletkor > 12 && eletkor <= 18) // Serdülő
+                {
+                    if (pulzus < 60) return "Alacsony a pulzusod.";
+                    else if (pulzus > 100) return "Magas a pulzusod.";
+                }
+                else if (eletkor >= 19) // Felnőttek (19 év felett)
+                {
+                    if (pulzus < 60) return "Alacsony a pulzusod.";
+                    else if (pulzus > 100) return "Magas a pulzusod.";
+                }
 
-            return "Normális a pulzusod.";
+                return "Normális a pulzusod.";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Hiba történt szeretné látni a hibát?");
+                if (Console.ReadLine() == "igen")
+                {
+
+                    Console.WriteLine(e);
+                }
+            }
         }
 
         static void Beallit()
         {
-            Console.BackgroundColor = szinek[alaphatter];
-            Console.ForegroundColor = szinek[alapszin];
-            string[] kiirni = { "Betű", "Háttér" };
-            bool megy = true;
-            int aktualis = 0;
-            while (megy)
+            try
             {
-                Console.Clear();
-
-                for (int i = 0; i < kiirni.Length; i++)
+                Console.BackgroundColor = szinek[alaphatter];
+                Console.ForegroundColor = szinek[alapszin];
+                string[] kiirni = { "Betű", "Háttér" };
+                bool megy = true;
+                int aktualis = 0;
+                while (megy)
                 {
-                    if (aktualis == i)
+                    Console.Clear();
+
+                    for (int i = 0; i < kiirni.Length; i++)
                     {
-                        Console.ForegroundColor = szinek[alapszin];
-                        Console.WriteLine(kiirni[i]);
-                        Console.ForegroundColor = ConsoleColor.White;
+                        if (aktualis == i)
+                        {
+                            Console.ForegroundColor = szinek[alapszin];
+                            Console.WriteLine(kiirni[i]);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        else
+                        {
+                            Console.WriteLine(kiirni[i]);
+                        }
                     }
-                    else
+
+                    switch (Console.ReadKey().Key)
                     {
-                        Console.WriteLine(kiirni[i]);
+                        case ConsoleKey.Enter:
+                            int szin = Szinvalaszto();
+                            if (szin == -1)
+                            {
+                                break;
+                            }
+                            if (alaphatter != szin && alapszin != szin)
+                            {
+                                megy = false;
+                                if (aktualis == 0)
+                                    alapszin = szin;
+                                else
+                                    alaphatter = szin;
+                            }
+
+                            break;
+
+                        case ConsoleKey.DownArrow:
+                            if (aktualis < kiirni.Length - 1)
+                                aktualis++;
+                            else
+                            {
+                                aktualis = 0;
+                            }
+                            break;
+                        case ConsoleKey.UpArrow:
+                            if (aktualis > 0)
+                                aktualis--;
+                            else
+                            {
+                                aktualis = kiirni.Length - 1;
+                            }
+                            break;
+                        case ConsoleKey.LeftArrow:
+                            megy = false;
+                            break;
                     }
                 }
-
-                switch (Console.ReadKey().Key)
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Hiba történt szeretné látni a hibát?");
+                if (Console.ReadLine() == "igen")
                 {
-                    case ConsoleKey.Enter:
-                        int szin = Szinvalaszto();
-                        if (szin == -1)
-                        {
-                            break;
-                        }
-                        if (alaphatter != szin && alapszin != szin)
-                        {
-                            megy = false;
-                            if (aktualis == 0)
-                                alapszin = szin;
-                            else
-                                alaphatter = szin;
-                        }
 
-                        break;
-
-                    case ConsoleKey.DownArrow:
-                        if (aktualis < kiirni.Length - 1)
-                            aktualis++;
-                        else
-                        {
-                            aktualis = 0;
-                        }
-                        break;
-                    case ConsoleKey.UpArrow:
-                        if (aktualis > 0)
-                            aktualis--;
-                        else
-                        {
-                            aktualis = kiirni.Length - 1;
-                        }
-                        break;
-                    case ConsoleKey.LeftArrow:
-                        megy = false;
-                        break;
+                    Console.WriteLine(e);
                 }
             }
         }
 
         static int Szinvalaszto()
         {
-
-
-
-            Console.BackgroundColor = szinek[alaphatter];
-            Console.ForegroundColor = szinek[alapszin];
-
-
-            ConsoleColor[] szinek_kicsi = new ConsoleColor[szinek.Length - 1];
-            string[] szinek_neve_kicsi = new string[szinek_neve.Length - 1];
-            int jo_index = 0;
-            for (int i = 0; i < szinek.Length; i++)
+            try
             {
-                if (i == alapszin || i == alaphatter)
-                    continue; // ezt a színt kihagyjuk
-
-                szinek_kicsi[jo_index] = szinek[i];
-                szinek_neve_kicsi[jo_index] = szinek_neve[i];
-                jo_index++;
-            }
 
 
-            bool kivalaszt = true;
-            int akt_szin_szama = 0;
+                Console.BackgroundColor = szinek[alaphatter];
+                Console.ForegroundColor = szinek[alapszin];
 
-            while (kivalaszt)
-            {
-                Console.Clear();
 
-                for (int i = 0; i < szinek_kicsi.Length; i++)
+                ConsoleColor[] szinek_kicsi = new ConsoleColor[szinek.Length - 1];
+                string[] szinek_neve_kicsi = new string[szinek_neve.Length - 1];
+                int jo_index = 0;
+                for (int i = 0; i < szinek.Length; i++)
                 {
+                    if (i == alapszin || i == alaphatter)
+                        continue; // ezt a színt kihagyjuk
 
-
-
-                    if (i == akt_szin_szama)
-                    {
-
-                        Console.ForegroundColor = szinek_kicsi[i];
-                        Console.WriteLine(szinek_neve_kicsi[i]);
-                        Console.ForegroundColor = ConsoleColor.White;
-
-
-                    }
-                    else
-                    {
-                        Console.WriteLine(szinek_neve_kicsi[i]);
-                    }
-
+                    szinek_kicsi[jo_index] = szinek[i];
+                    szinek_neve_kicsi[jo_index] = szinek_neve[i];
+                    jo_index++;
                 }
 
-                switch (Console.ReadKey().Key)
+
+                bool kivalaszt = true;
+                int akt_szin_szama = 0;
+
+                while (kivalaszt)
                 {
-                    case ConsoleKey.Enter:
-                        kivalaszt = false;
-                        break;
-                    case ConsoleKey.UpArrow:
+                    Console.Clear();
 
-                        if (akt_szin_szama > 0)
-                            akt_szin_szama--;
+                    for (int i = 0; i < szinek_kicsi.Length; i++)
+                    {
+
+
+
+                        if (i == akt_szin_szama)
+                        {
+
+                            Console.ForegroundColor = szinek_kicsi[i];
+                            Console.WriteLine(szinek_neve_kicsi[i]);
+                            Console.ForegroundColor = ConsoleColor.White;
+
+
+                        }
                         else
                         {
-                            akt_szin_szama = szinek_szama - 3;
+                            Console.WriteLine(szinek_neve_kicsi[i]);
                         }
-                        break;
-                    case ConsoleKey.DownArrow:
 
-                        if (akt_szin_szama < szinek_szama - 3)
-                            akt_szin_szama++;
-                        else
-                        {
-                            akt_szin_szama = 0;
-                        }
-                        break;
-                    default:
-                        Console.Beep();
-                        break;
-                    case ConsoleKey.LeftArrow:
-                        kivalaszt = false;
-                        return -1;
+                    }
 
+                    switch (Console.ReadKey().Key)
+                    {
+                        case ConsoleKey.Enter:
+                            kivalaszt = false;
+                            break;
+                        case ConsoleKey.UpArrow:
+
+                            if (akt_szin_szama > 0)
+                                akt_szin_szama--;
+                            else
+                            {
+                                akt_szin_szama = szinek_szama - 3;
+                            }
+                            break;
+                        case ConsoleKey.DownArrow:
+
+                            if (akt_szin_szama < szinek_szama - 3)
+                                akt_szin_szama++;
+                            else
+                            {
+                                akt_szin_szama = 0;
+                            }
+                            break;
+                        default:
+                            Console.Beep();
+                            break;
+                        case ConsoleKey.LeftArrow:
+                            kivalaszt = false;
+                            return -1;
+
+                    }
+                }
+
+                int vissza = Array.IndexOf(szinek, szinek_kicsi[akt_szin_szama]);
+                return vissza;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Hiba történt szeretné látni a hibát?");
+                if (Console.ReadLine() == "igen")
+                {
+
+                    Console.WriteLine(e);
                 }
             }
-
-            int vissza = Array.IndexOf(szinek, szinek_kicsi[akt_szin_szama]);
-            return vissza;
-
         }
 
         static void Kilep()
