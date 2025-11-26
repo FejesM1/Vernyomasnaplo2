@@ -932,51 +932,61 @@ namespace Vernyomasnaplo
                         break;
                     }
                 }
-                Console.WriteLine("Adatok megjelenítése:\n");
-                int darab = 0;
-                if (talalat == true)
+
+                if (adatok[index].EndsWith("("))
                 {
-                    darab = adatok[index].Split('(')[1].Split('|').Count();
-                    Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]} ({eletkor} éves)\n");
-                    if (adatok[index].Split('(')[1] != "")
+                    Console.WriteLine("Nincs mit törölni");
+                }
+                else
+                {
+                    Console.WriteLine("Adatok megjelenítése:\n");
+                    int darab = 0;
+                    if (talalat == true)
                     {
-                        for (int i = 0; i < darab; i++)
+                        darab = adatok[index].Split('(')[1].Split('|').Count();
+                        Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]} ({eletkor} éves)\n");
+                        if (adatok[index].Split('(')[1] != "")
                         {
+                            for (int i = 0; i < darab; i++)
+                            {
 
-                            Console.Write($"A(z) {i + 1}. mérés eredménye:\nDátum: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]}\nAdatok: szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]}, diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}, pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n");
+                                Console.Write($"A(z) {i + 1}. mérés eredménye:\nDátum: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[3]}\nAdatok: szisztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[0]}, diasztolés: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[1]}, pulzus: {adatok[index].Split('(')[1].Split('|')[i].Split(';')[2]}\n");
+                            }
                         }
+
+                        Console.WriteLine();
+                        Console.WriteLine("Adja meg melyiket kívánja törölni?");
+
+                        Console.WriteLine(adatok[index]);
+                        int torol_index = int.Parse(Console.ReadLine()) - 1;
+
+
+
+
+
+                        string torolni = $"{adatok[index].Split('(')[1].Split('|')[torol_index].Split(';')[0]};{adatok[index].Split('(')[1].Split('|')[torol_index].Split(';')[1]};{adatok[index].Split('(')[1].Split('|')[torol_index].Split(';')[2]};{adatok[index].Split('(')[1].Split('|')[torol_index].Split(';')[3]}";
+
+                        if (torol_index > 0 && darab > 1)
+                        {
+                            torolni = "|" + torolni;
+
+                        }
+                        else if (darab > 1)
+                        {
+                            torolni += "|";
+                        }
+                        Console.WriteLine(torolni);
+                        string modositott = adatok[index].Replace(torolni, "");
+                        Console.WriteLine(modositott);
+
+                        string[] sorok = File.ReadAllLines("Adatok.txt");
+                        sorok[index] = modositott;
+
+                        File.WriteAllLines("Adatok.txt", sorok);
+                        adatok[index] = modositott;
+
+
                     }
-                    Console.WriteLine();
-                    Console.WriteLine("Adja meg melyiket kívánja törölni?");
-
-                    Console.WriteLine(adatok[index]);
-                    int torol_index = int.Parse(Console.ReadLine()) - 1;
-
-
-
-
-
-                    string torolni = $"{adatok[index].Split('(')[1].Split('|')[torol_index].Split(';')[0]};{adatok[index].Split('(')[1].Split('|')[torol_index].Split(';')[1]};{adatok[index].Split('(')[1].Split('|')[torol_index].Split(';')[2]};{adatok[index].Split('(')[1].Split('|')[torol_index].Split(';')[3]}";
-
-                    if (torol_index > 0 && darab > 1)
-                    {
-                        torolni = "|" + torolni;
-
-                    }
-                    else if (darab > 1)
-                    {
-                        torolni += "|";
-                    }
-                    Console.WriteLine(torolni);
-                    string modositott = adatok[index].Replace(torolni, "");
-                    Console.WriteLine(modositott);
-
-                    string[] sorok = File.ReadAllLines("Adatok.txt");
-                    sorok[index] = modositott;
-
-                    File.WriteAllLines("Adatok.txt", sorok);
-                    adatok[index] = modositott;
-
 
                 }
 
