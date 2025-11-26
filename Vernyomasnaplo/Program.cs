@@ -434,6 +434,9 @@ namespace Vernyomasnaplo
         {
             try
             {
+
+                Console.BackgroundColor = szinek[alaphatter];
+                Console.ForegroundColor = szinek[alapszin];
                 Console.Clear();
                 Console.WriteLine("╔════════════════════════╗");
                 Console.WriteLine("║     Felhasználók       ║");
@@ -468,6 +471,9 @@ namespace Vernyomasnaplo
         {
             try
             {
+
+                Console.BackgroundColor = szinek[alaphatter];
+                Console.ForegroundColor = szinek[alapszin];
                 Console.Clear();
                 Console.WriteLine("╔════════════════════════╗");
                 Console.WriteLine("║  Összes felhasználó    ║");
