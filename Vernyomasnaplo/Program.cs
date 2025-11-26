@@ -710,7 +710,9 @@ namespace Vernyomasnaplo
                         break;
                     }
                 }
+
                
+
 
                 if (talalat == true)
                 {
@@ -766,92 +768,95 @@ namespace Vernyomasnaplo
                     }
                 }
 
-
-
-                List<int> szisz = new List<int>();
-                List<int> diasz = new List<int>();
-                List<int> pulzus = new List<int>();
-                for (int i = 0; i < adatok.Count; i++)
+                if (!adatok[index].EndsWith("("))
                 {
-                    if (!adatok[i].EndsWith("("))
+                    List<int> szisz = new List<int>();
+                    List<int> diasz = new List<int>();
+                    List<int> pulzus = new List<int>();
+                    for (int i = 0; i < adatok.Count; i++)
                     {
-                    for (int b = 0; b < adatok[i].Split('(')[1].Split('|').Count();b++)
-                    {
+                        if (!adatok[i].EndsWith("("))
+                        {
+                            for (int b = 0; b < adatok[i].Split('(')[1].Split('|').Count(); b++)
+                            {
 
-                        int leg_szisz = int.Parse(adatok[i].Split('(')[1].Split('|')[b].Split(';')[0]);
-                        int leg_diasz = int.Parse(adatok[i].Split('(')[1].Split('|')[b].Split(';')[1]);
-                        int leg_pul = int.Parse(adatok[i].Split('(')[1].Split('|')[b].Split(';')[2]);
-                        szisz.Add(leg_szisz); 
-                        diasz.Add(leg_diasz);
-                        pulzus.Add(leg_pul);
+                                int leg_szisz = int.Parse(adatok[i].Split('(')[1].Split('|')[b].Split(';')[0]);
+                                int leg_diasz = int.Parse(adatok[i].Split('(')[1].Split('|')[b].Split(';')[1]);
+                                int leg_pul = int.Parse(adatok[i].Split('(')[1].Split('|')[b].Split(';')[2]);
+                                szisz.Add(leg_szisz);
+                                diasz.Add(leg_diasz);
+                                pulzus.Add(leg_pul);
+                            }
+
+
                         }
-
 
                     }
 
+                    Console.WriteLine("Szisztolés értékek:");
+                    foreach (int s in szisz)
+                    {
+                        Console.Write($"{s}, ");
+                    }
+
+                    Console.WriteLine("\nDiasztolés értékek:");
+                    foreach (int d in diasz)
+                    {
+                        Console.Write($"{d}, ");
+                    }
+
+                    Console.WriteLine("\nPulzus értékek:");
+                    foreach (int p in pulzus)
+                    {
+                        Console.Write($"{p}, ");
+                    }
+
+                    Console.WriteLine();
+
+                    // Szisztolés
+                    Console.Write("Adj meg egy számot a szisztoléshez: ");
+                    int sziszSzam = int.Parse(Console.ReadLine());
+
+                    int sziszFelott = 0;
+                    for (int i = 0; i < szisz.Count; i++)
+                    {
+                        if (szisz[i] > sziszSzam)
+                            sziszFelott++;
+                    }
+
+                    double sziszSzazalek = (double)sziszFelott / szisz.Count * 100;
+                    Console.WriteLine($"A szisztolés értékek {sziszSzazalek.ToString("F2")}% -a nagyobb, mint {sziszSzam}.");
+
+                    // Diasztolés
+                    Console.Write("Adj meg egy számot a diasztoléshez: ");
+                    int diaszSzam = int.Parse(Console.ReadLine());
+
+                    int diaszFelott = 0;
+                    for (int i = 0; i < diasz.Count; i++)
+                    {
+                        if (diasz[i] > diaszSzam)
+                            diaszFelott++;
+                    }
+
+                    double diaszSzazalek = (double)diaszFelott / diasz.Count * 100;
+                    Console.WriteLine($"A diasztolés értékek {diaszSzazalek.ToString("F2")}% -a nagyobb, mint {diaszSzam}.");
+
+                    // Pulzus
+                    Console.Write("Adj meg egy számot a pulzushoz: ");
+                    int pulzusSzam = int.Parse(Console.ReadLine());
+
+                    int pulzusFelott = 0;
+                    for (int i = 0; i < pulzus.Count; i++)
+                    {
+                        if (pulzus[i] > pulzusSzam)
+                            pulzusFelott++;
+                    }
+
+                    double pulzusSzazalek = (double)pulzusFelott / pulzus.Count * 100;
+                    Console.WriteLine($"A pulzus értékek {pulzusSzazalek.ToString("F2")}% -a nagyobb, mint {pulzusSzam}.");
                 }
 
-                Console.WriteLine("Szisztolés értékek:");
-                foreach (int s in szisz)
-                {
-                    Console.Write($"{s} ");
-                }
-
-                Console.WriteLine("\nDiasztolés értékek:");
-                foreach (int d in diasz)
-                {
-                    Console.Write($"{d} ");
-                }
-
-                Console.WriteLine("\nPulzus értékek:");
-                foreach (int p in pulzus)
-                {
-                    Console.Write($"{p} ");
-                }
-
-                Console.WriteLine();
-
-                // Szisztolés
-                Console.Write("Adj meg egy számot a szisztoléshez: ");
-                int sziszSzam = int.Parse(Console.ReadLine());
-
-                int sziszFelott = 0;
-                for (int i = 0; i < szisz.Count; i++)
-                {
-                    if (szisz[i] > sziszSzam)
-                        sziszFelott++;
-                }
-
-                double sziszSzazalek = (double)sziszFelott / szisz.Count * 100;
-                Console.WriteLine($"A szisztolés értékek {sziszSzazalek.ToString("F2")}% -a nagyobb, mint {sziszSzam}.");
-
-                // Diasztolés
-                Console.Write("Adj meg egy számot a diasztoléshez: ");
-                int diaszSzam = int.Parse(Console.ReadLine());
-
-                int diaszFelott = 0;
-                for (int i = 0; i < diasz.Count; i++)
-                {
-                    if (diasz[i] > diaszSzam)
-                        diaszFelott++;
-                }
-
-                double diaszSzazalek = (double)diaszFelott / diasz.Count * 100;
-                Console.WriteLine($"A diasztolés értékek {diaszSzazalek.ToString("F2")}% -a nagyobb, mint {diaszSzam}.");
-
-                // Pulzus
-                Console.Write("Adj meg egy számot a pulzushoz: ");
-                int pulzusSzam = int.Parse(Console.ReadLine());
-
-                int pulzusFelott = 0;
-                for (int i = 0; i < pulzus.Count; i++)
-                {
-                    if (pulzus[i] > pulzusSzam)
-                        pulzusFelott++;
-                }
-
-                double pulzusSzazalek = (double)pulzusFelott / pulzus.Count * 100;
-                Console.WriteLine($"A pulzus értékek {pulzusSzazalek.ToString("F2")}% -a nagyobb, mint {pulzusSzam}.");
+              
 
 
 
@@ -957,7 +962,7 @@ namespace Vernyomasnaplo
                         Console.WriteLine();
                         Console.WriteLine("Adja meg melyiket kívánja törölni?");
 
-                        Console.WriteLine(adatok[index]);
+                       
                         int torol_index = int.Parse(Console.ReadLine()) - 1;
 
 
@@ -975,16 +980,16 @@ namespace Vernyomasnaplo
                         {
                             torolni += "|";
                         }
-                        Console.WriteLine(torolni);
+             
                         string modositott = adatok[index].Replace(torolni, "");
-                        Console.WriteLine(modositott);
+                  
 
                         string[] sorok = File.ReadAllLines("Adatok.txt");
                         sorok[index] = modositott;
 
                         File.WriteAllLines("Adatok.txt", sorok);
                         adatok[index] = modositott;
-
+                        Console.WriteLine("adat törölve");
 
                     }
 
