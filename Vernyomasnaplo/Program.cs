@@ -170,11 +170,9 @@ namespace Vernyomasnaplo
                             Console.Beep();
                             break;
                     }
-
-
                 }
-
             }
+
             catch (Exception e)
             {
                 Console.WriteLine("Hiba történt szeretné látni a hibát?");
@@ -627,8 +625,6 @@ namespace Vernyomasnaplo
                     }
                 }
 
-                
-
                 int darab = adatok[index].Split('(')[1].Split('|').Count();
                 int törles;
                 DateTime most = DateTime.Now;
@@ -717,9 +713,6 @@ namespace Vernyomasnaplo
                     }
                 }
 
-               
-
-
                 if (talalat == true)
                 {
                     Console.WriteLine($"A felhasználó neve: {adatok[index].Split('(')[0]} ({eletkor} éves)\n");
@@ -793,10 +786,7 @@ namespace Vernyomasnaplo
                                 diasz.Add(leg_diasz);
                                 pulzus.Add(leg_pul);
                             }
-
-
                         }
-
                     }
 
                     Console.WriteLine("Szisztolés értékek:");
@@ -861,12 +851,6 @@ namespace Vernyomasnaplo
                     double pulzusSzazalek = (double)pulzusFelott / pulzus.Count * 100;
                     Console.WriteLine($"A pulzus értékek {pulzusSzazalek.ToString("F2")}% -a nagyobb, mint {pulzusSzam}.");
                 }
-
-              
-
-
-
-
 
                 Console.WriteLine("\nNyomjon Entert a visszatéréshez.");
                 Console.ReadLine();
@@ -970,10 +954,6 @@ namespace Vernyomasnaplo
 
                        
                         int torol_index = int.Parse(Console.ReadLine()) - 1;
-
-
-
-
 
                         string torolni = $"{adatok[index].Split('(')[1].Split('|')[torol_index].Split(';')[0]};{adatok[index].Split('(')[1].Split('|')[torol_index].Split(';')[1]};{adatok[index].Split('(')[1].Split('|')[torol_index].Split(';')[2]};{adatok[index].Split('(')[1].Split('|')[torol_index].Split(';')[3]}";
 
