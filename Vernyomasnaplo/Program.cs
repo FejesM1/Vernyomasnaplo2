@@ -17,10 +17,11 @@ namespace Vernyomasnaplo
         static DateTime szul_datum;
         static bool fut = true;
         static string bejelentkezettFelhasznalo = "";
+        
         static bool bejelentkezve = false;
         static bool kivalasztva = false;
-        static string[] menupontok = { "Regisztrálás", "Bejelentkezés", "Adatok hozzáadása", "Adatok módosítása", "Adatok megjelenítése", "Adat törlése", "Beállítások", "Kilépés" };
-        static Action[] fuggvenyek = { Regisztral, Bejelentkezes, AdatokHozzaadasa, Modosit, Megjelenit, Torol, Beallit, Kilep };
+        static string[] menupontok = { "Regisztrálás", "Bejelentkezés", "Adatok hozzáadása", "Adatok módosítása", "Adatok megjelenítése", "Adat törlése", "Beállítások", "Kilépés", "Felhasználók listázása (Admin)", "Összes felhasználó adatai (Admin)" };
+        static Action[] fuggvenyek = { Regisztral, Bejelentkezes, AdatokHozzaadasa, Modosit, Megjelenit, Torol, Beallit, Kilep, AdminFelhasznalok, OsszesFelhasznaloAdatai };
         static int aktualis_menu_pont = 0;
         static int menupontok_szama = menupontok.Length;
 
@@ -58,6 +59,24 @@ namespace Vernyomasnaplo
                 // 🔹 Fájlok létrehozása, ha nem léteznek
                 if (!File.Exists(adatokFile)) File.Create(adatokFile).Close();
                 if (!File.Exists(felhasznalokFile)) File.Create(felhasznalokFile).Close();
+                bool adminLetezik = false;
+                foreach (var sor in File.ReadAllLines(felhasznalokFile))
+                {
+                    var adatok = sor.Split(';');
+                    if (adatok.Length >= 2 && adatok[0] == "admin")
+                    {
+                        adminLetezik = true;
+                        break;
+                    }
+                }
+
+                if (!adminLetezik)
+                {
+                    File.AppendAllText(felhasznalokFile, $"admin;1234;2000.01.01{Environment.NewLine}");
+                    // Az adatok fájlba is felvehetjük üresen az adminhoz
+                    File.AppendAllText(adatokFile, "admin(" + Environment.NewLine);
+                }
+
 
                 // 🔹 Adatok beolvasása
                 adatok.Clear();
@@ -74,12 +93,37 @@ namespace Vernyomasnaplo
 
                     Console.Clear();
 
-                    int startIndex = bejelentkezve ? 2 : 0;
-                    int endIndex = bejelentkezve ? menupontok.Length : 2;
+
+                    int startIndex, endIndex;
 
 
+
+
+                    if (!bejelentkezve)
+                    {
+                        startIndex = 0;
+                        endIndex = 2; // Regisztrálás, Bejelentkezés
+                    }
+                    else if (bejelentkezettFelhasznalo == "admin")
+                    {
+                        // Admin csak a Kilépés és az admin menüpontokat lássa
+                        startIndex = 7; // Kilépés indexe
+                        endIndex = menupontok.Length; // 10
+                    }
+                    else
+                    {
+                        // Normál felhasználó
+                        startIndex = 2;
+                        endIndex = menupontok.Length - 2; // kihagyjuk az admin menüpontokat
+                    }
+
+
+                    // Menü kiírása
                     for (int i = startIndex; i < endIndex; i++)
                     {
+                        if (aktualis_menu_pont < startIndex || aktualis_menu_pont >= endIndex)
+                            aktualis_menu_pont = startIndex; // index biztonság
+
                         if (aktualis_menu_pont == i)
                         {
                             Console.ForegroundColor = szinek[alapszin];
@@ -91,6 +135,7 @@ namespace Vernyomasnaplo
                             Console.WriteLine(menupontok[i]);
                         }
                     }
+
 
 
                     var key = Console.ReadKey(true).Key;
@@ -120,7 +165,7 @@ namespace Vernyomasnaplo
                                 aktualis_menu_pont++;
                             else
                             {
-                                aktualis_menu_pont = 0;
+                                aktualis_menu_pont = startIndex;
                             }
                             break;
 
@@ -144,6 +189,20 @@ namespace Vernyomasnaplo
             }
         }
 
+        static bool AdminBelépés(string nev, string jelszo)
+        {
+            foreach (var sor in File.ReadAllLines(felhasznalokFile))
+            {
+                var adatok = sor.Split(';');
+                if (adatok.Length >= 2 &&
+                    adatok[0].Trim().Equals("admin", StringComparison.OrdinalIgnoreCase) &&
+                    adatok[1].Trim() == jelszo.Trim())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         // 🔸 Felhasználó létezés ellenőrzés
         static bool FelhasznaloLetezik(string nev)
         {
@@ -184,7 +243,7 @@ namespace Vernyomasnaplo
                 Console.WriteLine("║                        ║");
                 Console.WriteLine("╚════════════════════════╝");
 
-                Console.WriteLine("Regisztrálás:\n");
+                
                 Console.Write("Felhasználónév: ");
                 string nev = Console.ReadLine()?.Trim();
                 if (string.IsNullOrEmpty(nev))
@@ -242,8 +301,6 @@ namespace Vernyomasnaplo
                 Console.WriteLine("║                        ║");
                 Console.WriteLine("╚════════════════════════╝");
 
-                Console.WriteLine("Bejelentkezés:\n");
-
                 Console.Write("Felhasználónév: ");
                 string nev = Console.ReadLine()?.Trim();
 
@@ -267,10 +324,14 @@ namespace Vernyomasnaplo
                 bool sikeres = false;
                 foreach (var sor in File.ReadAllLines(felhasznalokFile))
                 {
-                    var adatok = sor.Split(';');
-                    if (adatok.Length >= 2 && adatok[0] == nev && adatok[1] == jelszo)
+                    var adatokSor = sor.Split(';');
+                    if (adatokSor.Length >= 2 && adatokSor[0].Trim() == nev && adatokSor[1].Trim() == jelszo)
                     {
-                        szul_datum = Convert.ToDateTime(adatok[2]);
+                        if (adatokSor.Length >= 3)
+                            szul_datum = Convert.ToDateTime(adatokSor[2]);
+                        else
+                            szul_datum = DateTime.MinValue; // adminhoz nincs dátum
+
                         sikeres = true;
                         break;
                     }
@@ -278,27 +339,107 @@ namespace Vernyomasnaplo
 
                 if (sikeres)
                 {
-                    bejelentkezve = true;
                     bejelentkezettFelhasznalo = nev;
-                    Console.WriteLine("Sikeres bejelentkezés!");
+                    
+                    bejelentkezve = true;
+
+                    if (AdminBelépés(nev, jelszo))
+                    {
+                        Console.WriteLine("Admin bejelentkezve!");
+                        aktualis_menu_pont = menupontok.Length - 1; // admin menüpont index
+                    }
+                    else
+                    {
+                        Console.WriteLine("Sikeres bejelentkezés!");
+                        aktualis_menu_pont = 2; // normál felhasználó
+                    }
                 }
                 else
                 {
                     Console.WriteLine("Hibás felhasználónév vagy jelszó!");
                 }
-                Console.ReadLine();
 
+
+                Console.ReadLine();
             }
             catch (Exception e)
             {
                 Console.WriteLine("Hiba történt szeretné látni a hibát?");
                 if (Console.ReadLine() == "igen")
                 {
-
                     Console.WriteLine(e);
+                    Console.ReadLine();
                 }
             }
         }
+
+
+        static void AdminFelhasznalok()
+        {
+            try
+            {
+                Console.Clear();
+                Console.WriteLine("╔════════════════════════╗");
+                Console.WriteLine("║     Felhasználók       ║");
+                Console.WriteLine("╚════════════════════════╝\n");
+
+                foreach (var sor in File.ReadAllLines(felhasznalokFile))
+                {
+                    var adatok = sor.Split(';');
+                    if (adatok.Length >= 3)
+                    {
+                        Console.WriteLine($"Felhasználó: {adatok[0]}, Jelszó: {adatok[1]}, Születési dátum: {adatok[2]}");
+                    }
+                }
+
+                Console.WriteLine("\nNyomjon Entert a visszatéréshez.");
+                Console.ReadLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Hiba történt: {e.Message}");
+            }
+        }
+        static void OsszesFelhasznaloAdatai()
+        {
+            try
+            {
+                Console.Clear();
+                Console.WriteLine("╔════════════════════════╗");
+                Console.WriteLine("║  Összes felhasználó    ║");
+                Console.WriteLine("╚════════════════════════╝\n");
+
+                foreach (var sor in adatok)
+                {
+                    string[] resz = sor.Split('(');
+                    string nev = resz[0];
+                    string meresek = resz.Length > 1 ? resz[1] : "";
+
+                    Console.WriteLine($"Felhasználó: {nev}");
+                    if (!string.IsNullOrEmpty(meresek))
+                    {
+                        string[] m = meresek.Split('|');
+                        for (int i = 0; i < m.Length; i++)
+                        {
+                            string[] adat = m[i].Split(';');
+                            if (adat.Length >= 4)
+                            {
+                                Console.WriteLine($"  {i + 1}. mérés: Szisztolés: {adat[0]}, Diasztolés: {adat[1]}, Pulzus: {adat[2]}, Dátum: {adat[3]}");
+                            }
+                        }
+                    }
+                    Console.WriteLine();
+                }
+
+                Console.WriteLine("Nyomjon Entert a visszatéréshez.");
+                Console.ReadLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Hiba történt: " + e.Message);
+            }
+        }
+
 
         static void AdatokHozzaadasa()
         {
@@ -403,7 +544,7 @@ namespace Vernyomasnaplo
                     }
                 }
 
-                Console.WriteLine("Adatok megjelenítése:\n");
+                
 
                 int darab = adatok[index].Split('(')[1].Split('|').Count();
                 int törles;
@@ -485,7 +626,7 @@ namespace Vernyomasnaplo
                         break;
                     }
                 }
-                Console.WriteLine("Adatok megjelenítése:\n");
+               
 
                 if (talalat == true)
                 {
@@ -540,14 +681,6 @@ namespace Vernyomasnaplo
 
                     }
                 }
-
-
-
-
-
-
-
-
 
 
 
