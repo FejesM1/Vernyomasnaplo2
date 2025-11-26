@@ -182,6 +182,7 @@ namespace Vernyomasnaplo
                 {
 
                     Console.WriteLine(e);
+                    Console.ReadLine();
                 }
             }
         }
@@ -198,17 +199,31 @@ namespace Vernyomasnaplo
 
         static bool AdminBelépés(string nev, string jelszo)
         {
-            foreach (var sor in File.ReadAllLines(felhasznalokFile))
+            try
             {
-                var adatok = sor.Split(';');
-                if (adatok.Length >= 2 &&
-                    adatok[0].Trim().Equals("admin", StringComparison.OrdinalIgnoreCase) &&
-                    adatok[1].Trim() == jelszo.Trim())
+                foreach (var sor in File.ReadAllLines(felhasznalokFile))
                 {
-                    return true;
+                    var adatok = sor.Split(';');
+                    if (adatok.Length >= 2 &&
+                        adatok[0].Trim().Equals("admin", StringComparison.OrdinalIgnoreCase) &&
+                        adatok[1].Trim() == jelszo.Trim())
+                    {
+                        return true;
+                    }
                 }
+                return false;
             }
-            return false;
+            catch (Exception e)
+            {
+                Console.WriteLine("Hiba történt szeretné látni a hibát?");
+                if (Console.ReadLine() == "igen")
+                {
+
+                    Console.WriteLine(e);
+                    Console.ReadLine();
+                }
+                return false;
+            }
         }
         /// <summary>
         /// Megállapítja, hogy létezik-e a megadott nevű felhasználó a felhasználói fájlban.
@@ -238,6 +253,7 @@ namespace Vernyomasnaplo
                 {
 
                     Console.WriteLine(e);
+                    Console.ReadLine();
                 }
                 return false;
             }
@@ -308,6 +324,7 @@ namespace Vernyomasnaplo
                 {
 
                     Console.WriteLine(e);
+                    Console.ReadLine();
                 }
             }
         }
@@ -392,6 +409,7 @@ namespace Vernyomasnaplo
 
 
                 Console.ReadLine();
+             
             }
             catch (Exception e)
             {
@@ -436,6 +454,7 @@ namespace Vernyomasnaplo
             catch (Exception e)
             {
                 Console.WriteLine($"Hiba történt: {e.Message}");
+                Console.ReadLine();
             }
         }
         /// <summary>
@@ -482,6 +501,7 @@ namespace Vernyomasnaplo
             catch (Exception e)
             {
                 Console.WriteLine("Hiba történt: " + e.Message);
+                Console.ReadLine();
             }
         }
 
@@ -564,6 +584,7 @@ namespace Vernyomasnaplo
                 {
 
                     Console.WriteLine(e);
+                    Console.ReadLine();
                 }
             }
 
@@ -652,6 +673,7 @@ namespace Vernyomasnaplo
                 {
 
                     Console.WriteLine(e);
+                    Console.ReadLine();
                 }
             }
         }
@@ -751,17 +773,20 @@ namespace Vernyomasnaplo
                 List<int> pulzus = new List<int>();
                 for (int i = 0; i < adatok.Count; i++)
                 {
+                    if (!adatok[i].EndsWith("("))
+                    {
                     for (int b = 0; b < adatok[i].Split('(')[1].Split('|').Count();b++)
                     {
 
                         int leg_szisz = int.Parse(adatok[i].Split('(')[1].Split('|')[b].Split(';')[0]);
                         int leg_diasz = int.Parse(adatok[i].Split('(')[1].Split('|')[b].Split(';')[1]);
                         int leg_pul = int.Parse(adatok[i].Split('(')[1].Split('|')[b].Split(';')[2]);
-
-                        szisz.Add(leg_szisz);   
+                        szisz.Add(leg_szisz); 
                         diasz.Add(leg_diasz);
                         pulzus.Add(leg_pul);
-                       
+                        }
+
+
                     }
 
                 }
@@ -842,6 +867,7 @@ namespace Vernyomasnaplo
                 {
 
                     Console.Write($"{e} ");
+                    Console.ReadLine();
                 }
             }
         }
@@ -870,6 +896,7 @@ namespace Vernyomasnaplo
                 {
 
                     Console.WriteLine(e);
+                    Console.ReadLine();
                 }
                 return "hiba a Vernyomásnál";
             }
@@ -962,6 +989,7 @@ namespace Vernyomasnaplo
                 {
 
                     Console.WriteLine(e);
+                    Console.ReadLine();
                 }
             }
         }
@@ -1020,6 +1048,7 @@ namespace Vernyomasnaplo
                 {
 
                     Console.WriteLine(e);
+                    Console.ReadLine();
                 }
                 return "hiba a pulzus figyeloben";
             }
@@ -1104,6 +1133,7 @@ namespace Vernyomasnaplo
                 {
 
                     Console.WriteLine(e);
+                    Console.ReadLine();
                 }
             }
         }
@@ -1211,6 +1241,7 @@ namespace Vernyomasnaplo
                 {
 
                     Console.WriteLine(e);
+                    Console.ReadLine();
                 }
                 return 0;
             }
