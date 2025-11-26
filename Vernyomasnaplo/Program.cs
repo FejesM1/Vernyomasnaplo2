@@ -45,15 +45,12 @@ namespace Vernyomasnaplo
 
         static List<string> adatok = new List<string>();
 
+
         static void Main(string[] args)
-
-
-
         {
 
             try
             {
-
 
                 // 🔹 Fájlok létrehozása, ha nem léteznek
                 if (!File.Exists(adatokFile)) File.Create(adatokFile).Close();
@@ -170,6 +167,15 @@ namespace Vernyomasnaplo
 
         }
 
+
+
+        /// <summary>
+        /// Konzolos regisztrációs folyamatot hajt végre:
+        /// bekéri a felhasználónevét, születési dátumát és jelszavát,
+        /// ellenőrzi az érvényességet és az egyediséget,
+        /// majd elmenti az adatokat a megfelelő fájlokba.
+        /// Hiba esetén opcionálisan kiírja a kivétel részleteit.
+        /// </summary>
         static void Regisztral()
         {
 
@@ -229,6 +235,13 @@ namespace Vernyomasnaplo
             }
         }
 
+        /// <summary>
+        /// Konzolos bejelentkezést végez: bekéri a felhasználónevet és jelszót,
+        /// ellenőrzi azokat a felhasználói adatfájlban,
+        /// siker esetén beállítja a bejelentkezett állapotot és a kapcsolódó változókat,
+        /// sikertelenség esetén hibaüzenetet ír ki.
+        /// Kivételkor opcionálisan megjeleníti a hiba részleteit.
+        /// </summary>
         static void Bejelentkezes()
         {
             try
@@ -300,6 +313,12 @@ namespace Vernyomasnaplo
             }
         }
 
+        /// <summary>
+        /// Lehetővé teszi a felhasználó számára, hogy új méréseket adjon hozzá.
+        /// Bekéri a szisztolés és diasztolés értékeket, valamint a pulzust,
+        /// majd az aktuális idővel együtt elmenti azokat a felhasználó adataihoz
+        /// és frissíti az Adatok.txt fájlt. Hibák esetén opcionálisan kiírja a kivételt.
+        /// </summary>
         static void AdatokHozzaadasa()
         {
             try
@@ -378,6 +397,12 @@ namespace Vernyomasnaplo
 
         }
 
+        /// <summary>
+        /// Lehetővé teszi a felhasználó számára, hogy meglévő mérési adatait módosítsa.
+        /// Megjeleníti a felhasználó összes mérését, majd bekéri, melyik mérés adatait kívánja módosítani,
+        /// és az új szisztolés, diasztolés és pulzus értékeket elmenti a felhasználó adataihoz.
+        /// A változtatások frissítik az Adatok.txt fájlt. Hibák esetén opcionálisan kiírja a kivételt.
+        /// </summary>
         static void Modosit()
         {
             try
@@ -459,6 +484,12 @@ namespace Vernyomasnaplo
             }
         }
 
+        /// <summary>
+        /// Megjeleníti a bejelentkezett felhasználó összes mérési adatait (szisztolés, diasztolés, pulzus),
+        /// kiszámítja és kiírja a legnagyobb és legkisebb értékeket, valamint a diagnózisokat.
+        /// A felhasználó megadhat egy-egy értéket, és a program kiszámítja, hogy a mérési adatok hány százaléka haladja meg azt az értéket.
+        /// Hibák esetén opcionálisan kiírja a kivétel részleteit.
+        /// </summary>
         static void Megjelenit()
         {
             try
@@ -540,16 +571,6 @@ namespace Vernyomasnaplo
 
                     }
                 }
-
-
-
-
-
-
-
-
-
-
 
                 List<int> szisz = new List<int>();
                 List<int> diasz = new List<int>();
@@ -651,6 +672,12 @@ namespace Vernyomasnaplo
             }
         }
 
+        /// <summary>
+        /// Meghatározza a vérnyomás kategóriáját a megadott szisztolés és diasztolés értékek alapján.
+        /// </summary>
+        /// <param name="szisztoles">A szisztolés vérnyomás értéke.</param>
+        /// <param name="diasztoles">A diasztolés vérnyomás értéke.</param>
+        /// <returns>Szöveges leírás a vérnyomás állapotáról (pl. normális, alacsony, hipertónia fokozata).</returns>
         static string Vernyomas(int szisztoles, int diasztoles)
         {
             try
@@ -674,6 +701,9 @@ namespace Vernyomasnaplo
             }
         }
 
+        /// <summary>
+        /// Törli a bejelentkezett felhasználó kiválasztott mérését az adatokból és frissíti a fájlt.
+        /// </summary>
         static void Torol()
         {
             try
@@ -749,10 +779,6 @@ namespace Vernyomasnaplo
 
                 }
 
-
-
-
-
                 Console.ReadLine();
             }
             catch (Exception e)
@@ -766,8 +792,12 @@ namespace Vernyomasnaplo
             }
         }
 
-
-
+        /// <summary>
+        /// Kiértékeli a bejelentkezett felhasználó pulzusát az életkora alapján.
+        /// Visszaadja, hogy a pulzus alacsony, normális vagy magas.
+        /// </summary>
+        /// <param name="pulzus">A felhasználó aktuális pulzusértéke.</param>
+        /// <returns>Szöveges értékelés a pulzusról.</returns>
         static string pulzusfigyelo(int pulzus)
         {
             try
@@ -821,6 +851,10 @@ namespace Vernyomasnaplo
             }
         }
 
+        /// <summary>
+        /// Megjeleníti a felhasználó számára a színek beállítási menüjét,
+        /// lehetővé téve a betű- és háttérszín kiválasztását.
+        /// </summary>
         static void Beallit()
         {
             try
@@ -900,6 +934,14 @@ namespace Vernyomasnaplo
             }
         }
 
+        /// <summary>
+        /// Lehetővé teszi a felhasználó számára egy szín kiválasztását a rendelkezésre álló színek közül,
+        /// kizárva a már beállított betű- és háttérszínt. 
+        /// A felhasználó a nyilakkal navigálhat, Enterrel választ, vagy a bal nyíllal megszakíthatja a folyamatot.
+        /// </summary>
+        /// <returns>
+        /// A kiválasztott szín indexét adja vissza a színek tömbből, vagy -1-et, ha a felhasználó megszakította a választást.
+        /// </returns>
         static int Szinvalaszto()
         {
             try
@@ -1000,6 +1042,9 @@ namespace Vernyomasnaplo
             }
         }
 
+        /// <summary>
+        /// Leállítja a program futását a fő ciklusban.
+        /// </summary>
         static void Kilep()
         {
             fut = false;
