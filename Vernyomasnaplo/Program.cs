@@ -186,6 +186,16 @@ namespace Vernyomasnaplo
             }
         }
 
+        /// <summary>
+        /// Megkísérli az adminisztrátor hitelesítését a megadott felhasználónév és jelszó alapján.
+        /// </summary>
+        /// <remarks>Ez a metódus egy előre meghatározott fájlból olvassa a felhasználói hitelesítő adatokat.
+        /// Minden sort ellenőriz a megadott felhasználónév és jelszó egyezésére. A felhasználónév összehasonlítása
+        /// nem érzékeny a kis- és nagybetűkre, míg a jelszó összehasonlítása érzékeny a kis- és nagybetűkre.</remarks>
+        /// <param name="nev">A hitelesítendő felhasználónév. Ez a paraméter nem érzékeny a kis- és nagybetűkre.</param>
+        /// <param name="jelszo">A felhasználónévhez tartozó jelszó. Ez a paraméter érzékeny a kis- és nagybetűkre.</param>
+        /// <returns><see langword="true"/> ha a felhasználónév és jelszó egyezik egy adminisztrátori fiókkal; egyébként <see langword="false"/>.</returns>
+
         static bool AdminBelépés(string nev, string jelszo)
         {
             foreach (var sor in File.ReadAllLines(felhasznalokFile))
@@ -200,7 +210,15 @@ namespace Vernyomasnaplo
             }
             return false;
         }
-        // 🔸 Felhasználó létezés ellenőrzés
+        /// <summary>
+        /// Megállapítja, hogy létezik-e a megadott nevű felhasználó a felhasználói fájlban.
+        /// </summary>
+        /// <remarks>Ez a metódus beolvassa a felhasználói adatokat tartalmazó fájlt, és ellenőrzi,
+        /// hogy van-e olyan bejegyzés, amely megfelel a megadott névnek. Ha hiba történik a fájl
+        /// olvasása során, a metódus <see langword="false"/> értéket ad vissza.</remarks>
+        /// <param name="nev">A keresett felhasználó neve.</param>
+        /// <returns><see langword="true"/> ha létezik a megadott nevű felhasználó; egyébként <see langword="false"/>.</returns>
+
         static bool FelhasznaloLetezik(string nev)
         {
             try
@@ -386,6 +404,13 @@ namespace Vernyomasnaplo
             }
         }
 
+        /// <summary>
+        /// Felhasználók listáját jeleníti meg az előre meghatározott fájl beolvasásával, és kiírja az adataikat a konzolra.
+        /// </summary>
+        /// <remarks>Ez a metódus a <c>felhasznalokFile</c> változóval megadott fájlból olvassa be a felhasználói adatokat.
+        /// A fájl minden sora várhatóan felhasználói információt tartalmaz pontosvesszővel elválasztott formátumban.
+        /// A metódus kiírja a felhasználónevet, jelszót és születési dátumot minden felhasználóhoz a konzolra.
+        /// Ha hiba történik a fájl olvasása során, hibaüzenet jelenik meg.</remarks>
 
         static void AdminFelhasznalok()
         {
@@ -413,6 +438,13 @@ namespace Vernyomasnaplo
                 Console.WriteLine($"Hiba történt: {e.Message}");
             }
         }
+        /// <summary>
+        /// Minden felhasználó adatait, beleértve a méréseiket is, kiírja a konzolra.
+        /// </summary>
+        /// <remarks>Ez a metódus törli a konzolt, majd kiírja minden felhasználó nevét, és ha rendelkezésre állnak, a méréseiket is.
+        /// A mérések tartalmazzák a szisztolés és diasztolés vérnyomást, a pulzust és a dátumot.
+        /// A felhasználót megkérdezi, hogy nyomjon Entert a visszatéréshez az adatok megtekintése után.</remarks>
+
         static void OsszesFelhasznaloAdatai()
         {
             try
