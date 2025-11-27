@@ -13,7 +13,7 @@ namespace Vernyomasnaplo
 {
     internal class Program
     {
-
+        
         static DateTime szul_datum;
         static bool fut = true;
         static string bejelentkezettFelhasznalo = "";
@@ -52,7 +52,7 @@ namespace Vernyomasnaplo
 
             try
             {
-
+                Console.Title = "Vérnyomásnapló";
                 // 🔹 Fájlok létrehozása, ha nem léteznek
                 if (!File.Exists(adatokFile)) File.Create(adatokFile).Close();
                 if (!File.Exists(felhasznalokFile)) File.Create(felhasznalokFile).Close();
