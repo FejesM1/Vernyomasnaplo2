@@ -789,23 +789,7 @@ namespace Vernyomasnaplo
                         }
                     }
 
-                    Console.WriteLine("Szisztolés értékek:");
-                    foreach (int s in szisz)
-                    {
-                        Console.Write($"{s}, ");
-                    }
-
-                    Console.WriteLine("\nDiasztolés értékek:");
-                    foreach (int d in diasz)
-                    {
-                        Console.Write($"{d}, ");
-                    }
-
-                    Console.WriteLine("\nPulzus értékek:");
-                    foreach (int p in pulzus)
-                    {
-                        Console.Write($"{p}, ");
-                    }
+                    
 
                     Console.WriteLine();
 
